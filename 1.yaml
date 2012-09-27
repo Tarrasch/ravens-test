@@ -1,0 +1,86 @@
+---
+  grid:
+    [
+      [
+
+        [
+          {
+            shape: sector,
+            angle: 90,
+            start: 0,
+          }
+        ],
+
+        [
+          {
+            shape: sector,
+            angle: 90,
+            start: 90,
+          }
+        ],
+      ],
+      [
+
+        [
+          {
+            shape: sector,
+            angle: 90,
+            start: -90,
+          }
+        ],
+      ]
+    ]
+
+  1:
+    [
+      {
+        shape: sector,
+        angle: 180,
+        start: -90,
+      }
+    ]
+
+  2:
+    [
+      {
+        shape: sector,
+        angle: 90,
+        start: 90,
+      }
+    ]
+
+  3:
+    [
+      {
+        shape: sector,
+        angle: 90,
+        start: -90,
+      }
+    ]
+
+  4:
+    [
+      {
+        shape: sector,
+        angle: 90,
+        start: 180,
+      }
+    ]
+
+  5:
+    [
+      {
+        shape: sector,
+        angle: 45,
+        start: 180,
+      }
+    ]
+
+  6:
+    [
+      {
+        shape: sector,
+        angle: 90,
+        start: 0,
+      }
+    ]
