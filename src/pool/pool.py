@@ -26,7 +26,6 @@ def create_pool(figure_pairs):
   print "Not Implemented: create_pool!!!"
   return []
 
-# Hooray for completely pure functions!
 def positions(n, direction):
   dy, dx = direction
   last = (n-1, n-1)
