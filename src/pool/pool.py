@@ -7,7 +7,15 @@ def fetch_pools(grid):
 
   @return A list with 3 elements, each element is a pair of a list of Filters
   """
-  return []
+  def get_fig_pair(ix_pair):
+    y0, x0 = ix_pair[0]
+    y1, x1 = ix_pair[1]
+    return [grid[y0][x0], grid[y1][x1]]
+
+  def extract(arrows):
+    return create_pool(imap(get_fig_pair, arrows))
+
+  return imap(lambda lid_pair: imap(extract, lid_pair), lid_positions(len(grid)))
 
 def create_pool(figure_pairs):
   """
