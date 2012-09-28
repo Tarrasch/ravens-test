@@ -1,6 +1,6 @@
 from itertools import *
 
-def fetch_pools(grid):
+def fetch_pools(grid, direction):
   """
   The outside face of the pool module. Given the grid, return the different
   pool configurations that makes sense.
@@ -12,10 +12,8 @@ def fetch_pools(grid):
     y1, x1 = ix_pair[1]
     return [grid[y0][x0], grid[y1][x1]]
 
-  def extract(arrows):
-    return create_pool(imap(get_fig_pair, arrows))
-
-  return imap(lambda lid_pair: imap(extract, lid_pair), lid_positions(len(grid)))
+  arrows = positions(len(grid), direction)
+  return create_pool(imap(get_fig_pair, arrows))
 
 def create_pool(figure_pairs):
   """
@@ -39,12 +37,10 @@ def positions(n, direction):
       if last not in res and y < n and x < n:
         yield res
 
-
-def lid_positions(n):
+def positionss(n, directions):
   """
-  Get all the two lists of "positions" yielded by using two directions that
-  are linearly independent
+  Get all the two lists of "positions" yielded by using the directions that
+  should be linearly independent
   """
   positionsn = lambda d: positions(n, d)
-  directionss = combinations([(1, 0), (0, 1), (1, 1)], 2)
-  return imap(lambda x: imap(positionsn, x), directionss)
+  return imap(positionsn, directions)
