@@ -1,7 +1,10 @@
 from itertools import combinations
 
+def std_directions():
+  return [(1, 0), (0, 1), (1, 1)]
+
 def lid_directionss():
-  return combinations([(1, 0), (0, 1), (1, 1)], 2)
+  return combinations(std_directions(), 2)
 
 def direction_mnemonic(dir):
   return {

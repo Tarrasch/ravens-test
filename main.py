@@ -7,4 +7,4 @@ stream = open("1.yaml", 'r')
 tree = yaml.load(stream)
 
 pprint(tree)
-pprint(solve_verbose(tree))
+pprint(list(solve_verbose(tree)))

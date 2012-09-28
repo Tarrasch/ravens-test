@@ -1,4 +1,5 @@
 from itertools import *
+from src.filter import *
 
 def fetch_pools(grid, direction):
   """
@@ -22,7 +23,7 @@ def create_pool(figure_pairs):
   logic imported from the other files across this module.
   """
   print "Not Implemented: create_pool!!!"
-  return []
+  return [Filter(lambda old, new: True, 99999999, "No pattern found")]
 
 def positions(n, direction):
   dy, dx = direction
