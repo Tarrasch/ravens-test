@@ -12,7 +12,8 @@ def fetch_pools(grid):
 def create_pool(figure_pairs):
   """
   Given a list of figure-pairs, return a list of Filters that are sensible
-  based on the inputs
+  based on the inputs. This method will use the analogy understanding
+  logic imported from the other files across this module.
   """
   print "Not Implemented: create_pool!!!"
   return []
