@@ -7,7 +7,7 @@ class TestSolveFunctions(unittest.TestCase):
     src.solve.fetch_pools = lambda g, d: g+"o"+d
     src.solve.std_directions = lambda: ["a", "b"]
     got = src.solve.get_filterss("k")
-    exp = {"a": "koa", "b": "kob"}
+    exp = {"a": list("koa"), "b": list("kob")}
     self.assertEqual(got, exp)
 
   def test_get_new_figure_pair(self):
