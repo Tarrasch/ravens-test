@@ -49,7 +49,7 @@ def transformation_pool(figure_pairs):
 
 def transformation_pool_(figure_pair):
   cf = lambda triple: create_filter(*triple)
-  transform_ingredients = product(infer_selectors(figure_pair),
+  transform_ingredients = product(infer_selectors(figure_pair[0]),
       infer_modifiers(figure_pair),
       [False, True])
   return imap(cf, transform_ingredients) # TODO: add composition later

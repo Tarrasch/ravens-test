@@ -4,5 +4,5 @@ class Selector:
     self.punishment = punishment
     self.message = message
 
-def infer_selectors(figure_pair):
-  return []
+def infer_selectors(figure):
+  return [Selector(lambda subfig: True, 0, "All")]
