@@ -1,5 +1,6 @@
 from itertools import *
 from src.filter import *
+from src.pool.transforms import transformation_pool
 
 def fetch_pools(grid, direction):
   """
@@ -22,8 +23,8 @@ def create_pool(figure_pairs):
   based on the inputs. This method will use the analogy understanding
   logic imported from the other files across this module.
   """
-  print "Not Implemented: create_pool!!!"
-  return [Filter(lambda old, new: True, 99999999, "No pattern found")]
+  accept_all_filter = Filter(lambda old, new: True, 99999999, "No pattern")
+  return chain(transformation_pool(figure_pairs), [accept_all_filter])
 
 def positions(n, direction):
   dy, dx = direction

@@ -28,7 +28,8 @@ def get_filterss(grid):
   Given a grid, get a list of filters by considering analogies form each direction,
   that is, one element per direction
   """
-  return dict((dir, fetch_pools(grid, dir)) for dir in std_directions())
+  # Implementation detail: eh... we have to list the result since we cache it
+  return dict((dir, list(fetch_pools(grid, dir))) for dir in std_directions())
 
 def get_from_figure(grid, direction):
   """
