@@ -21,7 +21,7 @@ def solve_verbose(tree):
       total_cost = sum(map(lambda f: f.punishment, filter_pair))
       return (alternative, zip(filter_pair, map(direction_mnemonic, directions)), total_cost)
 
-    yield max(map(judge_directions, lid_directionss()), key=operator.itemgetter(2))
+    yield min(map(judge_directions, lid_directionss()), key=operator.itemgetter(2))
 
 def get_filterss(grid):
   """
