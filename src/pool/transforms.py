@@ -25,6 +25,9 @@ class Transformer(Filter):
   def accept(self, fig1, fig2):
     return normalize(self.transform(fig1)) == normalize(fig2)
 
+  def __repr__(self):
+    return self.message
+
 def normalize(dicts):
   return sorted(map(lambda dic: sorted(dic.iteritems()), dicts))
 

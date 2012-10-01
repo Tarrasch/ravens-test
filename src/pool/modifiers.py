@@ -7,6 +7,9 @@ class Modifier:
     self.punishment = punishment
     self.message = message
 
+  def __repr__(self):
+    return self.message
+
 def infer_modifiers(figure_pair):
   fig_A, fig_B = figure_pair
   yield Modifier(lambda x: x, 10, "no modification")
