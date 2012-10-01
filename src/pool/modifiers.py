@@ -16,7 +16,7 @@ def infer_modifiers(figure_pair):
     for subfig_B in fig_B:
       value_B = subfig_B.get(key)
       modifier = map_fig(lambda _: value_B, key)
-      yield Modifier(modifier, 10, "turn %s-values to %s" % (key, value_B))
+      yield Modifier(modifier, 10, "set `%s`s to %s" % (key, value_B))
 
       # Additive capability
       for subfig_A in fig_A:
@@ -24,7 +24,7 @@ def infer_modifiers(figure_pair):
         if type(value_A) == type(value_B) and "__sub__" in dir(value_A):
           delta = (value_B-value_A)
           modifier = map_fig(lambda v: v + delta, key)
-          yield Modifier(modifier, 10, "inc %s-values by %s" % (key, delta))
+          yield Modifier(modifier, 10, "inc `%s`s by %s" % (key, delta))
 
 
 def map_fig(modifier, key):
