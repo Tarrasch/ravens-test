@@ -5,5 +5,5 @@ class Modifier:
     self.message = message
 
 def infer_modifiers(figure_pair):
-  return []
+  return [Modifier(lambda x: x, 10, "no modification")]
 
