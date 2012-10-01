@@ -8,7 +8,7 @@ def get_all_modifier(*figs):
 
 class TestSelectorFunctions(unittest.TestCase):
 
-  def test_infer_selectors(self):
+  def test_infer_modifiers(self):
     # "Type-checking"
     fig_A = [{}]
     fig_B = [{}]
