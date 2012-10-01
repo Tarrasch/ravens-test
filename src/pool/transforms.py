@@ -23,7 +23,7 @@ class Transformer(Filter):
     return Transformer(transform, punishment, message)
 
   def accept(self, fig1, fig2):
-    self.transform(fig1) == fig2 # Fix equality
+    return self.transform(fig1) == fig2 # Fix equality
 
 def create_filter(selector, modification, copy):
   def apply(subfig):
@@ -35,13 +35,13 @@ def create_filter(selector, modification, copy):
       yield subfig
 
   def transform(fig):
-    concat_map(apply, fig)
+    return list(concat_map(apply, fig))
 
   punishment = selector.punishment + modification.punishment
   message = "for (%s) %s (%s)" % (selector.message,
                                   "copy with" if copy else "modify",
                                   modification.message)
-  return Filter(transform, punishment, message)
+  return Transformer(transform, punishment, message)
 
 
 def transformation_pool(figure_pairs):
