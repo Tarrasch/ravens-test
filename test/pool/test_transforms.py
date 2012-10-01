@@ -17,3 +17,9 @@ class TestTransformerFunctions(unittest.TestCase):
     self.assertTrue(filt1.accept(fig, ["a", "bc"]))
     filt1 = create_filter(selector, modifier, True)
     self.assertTrue(filt1.accept(fig, ["a", "bc", "b"]))
+
+  def test_accept(self):
+    tr = Transformer(lambda l: map(lambda x:x/2, l), 0, "copy-all")
+    fig = [6,7,8]
+    self.assertFalse(tr.accept(fig, [3, 4]))
+    self.assertTrue(tr.accept(fig, [3, 4, 3]))

@@ -9,6 +9,7 @@ from src.filter import *
 from src.pool.helpers import *
 from src.pool.selectors import infer_selectors
 from src.pool.modifiers import infer_modifiers
+from collections import Counter
 
 class Transformer(Filter):
   def __init__(self, transform, punishment, message):
@@ -23,7 +24,7 @@ class Transformer(Filter):
     return Transformer(transform, punishment, message)
 
   def accept(self, fig1, fig2):
-    return self.transform(fig1) == fig2 # Fix equality
+    return Counter(self.transform(fig1)) == Counter(fig2)
 
 def create_filter(selector, modification, copy):
   def apply(subfig):
