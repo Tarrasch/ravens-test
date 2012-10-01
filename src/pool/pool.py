@@ -21,10 +21,16 @@ def create_pool(figure_pairs):
   """
   Given a list of figure-pairs, return a list of Filters that are sensible
   based on the inputs. This method will use the analogy understanding
-  logic imported from the other files across this module.
+  logic imported from the other files across this module. Furthermore, this
+  method will do filtering to ensure that the filters at least accept the input
   """
+  figure_pairs = list(figure_pairs)
   accept_all_filter = Filter(lambda old, new: True, 99999999, "No pattern")
-  return chain(transformation_pool(figure_pairs), [accept_all_filter])
+  works = lambda f: all(map(lambda fig_pair: f.accept(*fig_pair),
+    figure_pairs))
+  return ifilter(works,
+    chain(transformation_pool(figure_pairs),
+    [accept_all_filter]))
 
 def positions(n, direction):
   dy, dx = direction
