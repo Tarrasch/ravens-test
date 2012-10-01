@@ -18,7 +18,7 @@ def infer_modifiers(figure_pair):
     # Becoming capability
     for subfig_B in fig_B:
       value_B = subfig_B.get(key)
-      modifier = map_fig(lambda _: value_B, key)
+      modifier = map_fig(lambda _, value_B=value_B: value_B, key)
       yield Modifier(modifier, 10, "set `%s`s to %s" % (key, value_B))
 
       # Additive capability
@@ -26,7 +26,7 @@ def infer_modifiers(figure_pair):
         value_A = subfig_A.get(key)
         if type(value_A) == type(value_B) and "__sub__" in dir(value_A):
           delta = (value_B-value_A)
-          modifier = map_fig(lambda v: v + delta, key)
+          modifier = map_fig(lambda v, delta=delta: v + delta, key)
           yield Modifier(modifier, 10, "inc `%s`s by %s" % (key, delta))
 
 
