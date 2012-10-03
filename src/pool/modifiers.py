@@ -26,7 +26,8 @@ def infer_modifiers(figure_pair):
         value_A = subfig_A.get(key)
         if type(value_A) == type(value_B) and "__sub__" in dir(value_A):
           delta = (value_B-value_A)
-          modifier = map_fig(lambda v, delta=delta: v + delta, key)
+          modifier = map_fig(lambda v, delta=delta: v + delta if
+          "__sub__" in dir(v) else "cantsubtract", key)
           yield Modifier(modifier, 10, "inc `%s`s by %s" % (key, delta))
 
 
