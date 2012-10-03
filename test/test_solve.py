@@ -15,3 +15,10 @@ class TestSolveFunctions(unittest.TestCase):
             ["c"]]
     self.assertEqual(get_from_figure(grid, (1, 1)), "a")
     self.assertEqual(get_from_figure(grid, (0, 1)), "c")
+
+    grid = [["1", "2", "3"],
+            ["4", "5", "6"],
+            ["7", "8",]]
+    self.assertEqual(get_from_figure(grid, (1, 1)), "5")
+    self.assertEqual(get_from_figure(grid, (0, 1)), "8")
+    self.assertEqual(get_from_figure(grid, (1, 0)), "6")
