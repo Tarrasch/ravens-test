@@ -51,7 +51,7 @@ def create_filter(selector, modification, copy):
 
 
 def transformation_pool(figure_pairs):
-  return concat_map(transformation_pool_, figure_pairs)
+  return set(concat_map(transformation_pool_, figure_pairs))
 
 def transformation_pool_(figure_pair):
   cf = lambda triple: create_filter(*triple)
