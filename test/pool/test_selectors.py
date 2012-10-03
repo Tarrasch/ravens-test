@@ -35,9 +35,11 @@ class TestSelectorFunctions(unittest.TestCase):
     self.assertTrue(v([{}], []))
     self.assertTrue(v([{"irrelevant":"property"}], []))
 
+    # test min/max
     fig = [{"x": x, "y": y} for x, y in product(range(3),
       repeat=2)]
-    v = get_validator(fig)
+    gv = get_validator_generic(fig)
+    v = gv(fig)
     self.assertEqual(len(fig), 9) # sanity check
     self.assertTrue (v(*split_on_condition(fig, lambda sf: sf["x"]==2)))
     self.assertFalse(v(*split_on_condition(fig, lambda sf: sf["x"]==1)))
@@ -45,7 +47,7 @@ class TestSelectorFunctions(unittest.TestCase):
 
     self.assertTrue (v(*split_on_condition(fig, lambda sf: sf["y"]==2)))
     self.assertFalse(v(*split_on_condition(fig, lambda sf: sf["y"]==1)))
-    self.assertFalse(v(*split_on_condition(fig, lambda sf: sf["y"]==1)))
+    self.assertTrue (v(*split_on_condition(fig, lambda sf: sf["y"]==0)))
 
     self.assertFalse(v([{"x":2}, {"y":2}], [{"x":1}]))
     self.assertTrue (v([{"x":2}, {"x":2}], []))
