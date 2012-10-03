@@ -53,4 +53,14 @@ class TestSelectorFunctions(unittest.TestCase):
     self.assertTrue (v([{"x":2}, {"x":2}], []))
     self.assertFalse(v([{"x":2}, {"x":1}], [[{"y":1}]]))
 
+    # test dynamix min/max
+    fig_in = [{"x": x, "y": y} for x, y in product(range(3), range(2))]
+    # Now only 2 rows
+    v = gv(fig_in)
+    self.assertTrue (v(*split_on_condition(fig_in, lambda sf: sf["x"]==2)))
+    self.assertFalse(v(*split_on_condition(fig_in, lambda sf: sf["x"]==1)))
+    self.assertTrue (v(*split_on_condition(fig_in, lambda sf: sf["x"]==0)))
 
+    # Note! Now y=1 is max, this is "only interesting" case!
+    self.assertTrue (v(*split_on_condition(fig_in, lambda sf: sf["y"]==1)))
+    self.assertTrue (v(*split_on_condition(fig_in, lambda sf: sf["y"]==0)))
