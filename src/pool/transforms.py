@@ -32,15 +32,15 @@ def normalize(dicts):
   return sorted(map(lambda dic: sorted(dic.iteritems()), dicts))
 
 def create_filter(selector, modification, copy):
-  def apply(subfig):
-    if selector.selects(subfig):
-      yield modification.modify(subfig)
-      if copy:
-        yield subfig
-    else:
-      yield subfig
-
   def transform(fig):
+    sfselects = selector.mk_subfig_selector(fig)
+    def apply(subfig):
+      if sfselects(subfig):
+        yield modification.modify(subfig)
+        if copy:
+          yield subfig
+      else:
+        yield subfig
     return list(concat_map(apply, fig))
 
   punishment = selector.punishment + modification.punishment

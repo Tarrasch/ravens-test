@@ -17,7 +17,7 @@ class TestTransformerFunctions(unittest.TestCase):
   def test_create_filter(self):
     import src
     src.pool.transforms.normalize = lambda x: x
-    selector = Selector(lambda sf: sf == "b", 3, "")
+    selector = simpleSelector(lambda sf: sf == "b", 3, "")
     modifier = Modifier(lambda sf: sf + "c", 5, "")
     filt1 = create_filter(selector, modifier, False)
     self.assertEqual(filt1.punishment, 8)

@@ -13,11 +13,11 @@ def split_on_condition(seq, condition):
 def get_validator(fig):
   selectors = list(infer_selectors(fig))
   def validator(exists, noexists):
-    return any(map(lambda sel:
-      all(map(lambda subfig: sel.selects(subfig), exists))
+    return any(map(lambda sfselects:
+      all(map(lambda subfig: sfselects(subfig), exists))
       and
-      all(map(lambda subfig: not sel.selects(subfig), noexists))
-      , selectors))
+      all(map(lambda subfig: not sfselects(subfig), noexists))
+      , map(lambda s: s.mk_subfig_selector(fig), selectors)))
   return validator
 
 class TestSelectorFunctions(unittest.TestCase):
