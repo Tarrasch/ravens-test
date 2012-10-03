@@ -16,7 +16,7 @@ class Transformer(Filter):
     self.punishment = punishment
     self.message = message
 
-  def composite(self, other_transformer):
+  def compose(self, other_transformer):
     transform = lambda fig: other_transformer.transform(self.transform(fig))
     punishment = self.punishment + other_transformer.punishment
     message = self.message + " -- and then " + other_transformer.message
@@ -24,6 +24,12 @@ class Transformer(Filter):
 
   def accept(self, fig1, fig2):
     return normalize(self.transform(fig1)) == normalize(fig2)
+
+  @staticmethod
+  def identity_transformer():
+    t = Transformer(lambda fig: fig, 0, "Identity-transformer (does nothing)")
+    t.compose = lambda other: other
+    return t
 
   def __repr__(self):
     return self.message
@@ -51,7 +57,13 @@ def create_filter(selector, modification, copy):
 
 
 def transformation_pool(figure_pairs):
-  return set(concat_map(transformation_pool_, figure_pairs))
+  return productify(set(concat_map(transformation_pool_, figure_pairs)))
+
+def productify(transformers):
+  uncomposeds = concat_map(lambda i: product(transformers, repeat=i), range(3))
+  def compose_transformers(ts):
+    return reduce(lambda t1, t2: t1.compose(t2), ts, Transformer.identity_transformer())
+  return map(compose_transformers, uncomposeds)
 
 def transformation_pool_(figure_pair):
   cf = lambda triple: create_filter(*triple)

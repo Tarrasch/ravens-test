@@ -26,3 +26,16 @@ class TestTransformerFunctions(unittest.TestCase):
     self.assertTrue(filt1.accept(fig, ["a", "bc"]))
     filt1 = create_filter(selector, modifier, True)
     self.assertTrue(filt1.accept(fig, ["a", "bc", "b"]))
+
+  def test_productify(self):
+    tr1 = Transformer(lambda x: x + "a", 0, "")
+    tr2 = Transformer(lambda x: x + "b", 0, "")
+    transformers = productify([tr1, tr2])
+    res = set([t.transform("got ") for t in transformers])
+    self.assertIn("got ", res)
+    self.assertIn("got a", res)
+    self.assertIn("got b", res)
+    self.assertIn("got ab", res)
+    self.assertIn("got ba", res)
+    self.assertIn("got aa", res)
+    self.assertIn("got bb", res)
