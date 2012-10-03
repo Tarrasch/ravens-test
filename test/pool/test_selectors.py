@@ -10,15 +10,20 @@ def split_on_condition(seq, condition):
       (a if condition(item) else b).append(item)
   return a,b
 
-def get_validator(fig):
+def get_validator_generic(fig):
   selectors = list(infer_selectors(fig))
-  def validator(exists, noexists):
-    return any(map(lambda sfselects:
-      all(map(lambda subfig: sfselects(subfig), exists))
-      and
-      all(map(lambda subfig: not sfselects(subfig), noexists))
-      , map(lambda s: s.mk_subfig_selector(fig), selectors)))
-  return validator
+  def make_validator(fig_in):
+    def validator(exists, noexists):
+      return any(map(lambda sfselects:
+        all(map(lambda subfig: sfselects(subfig), exists))
+        and
+        all(map(lambda subfig: not sfselects(subfig), noexists))
+        , map(lambda s: s.mk_subfig_selector(fig_in), selectors)))
+    return validator
+  return make_validator
+
+def get_validator(fig):
+  return get_validator_generic(fig)(fig)
 
 class TestSelectorFunctions(unittest.TestCase):
 
