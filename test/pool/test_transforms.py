@@ -30,7 +30,7 @@ class TestTransformerFunctions(unittest.TestCase):
   def test_productify(self):
     tr1 = Transformer(lambda x: x + "a", 0, "")
     tr2 = Transformer(lambda x: x + "b", 0, "")
-    transformers = productify([tr1, tr2])
+    transformers = productify([tr1, tr2], 3)
     res = set([t.transform("got ") for t in transformers])
     self.assertIn("got ", res)
     self.assertIn("got a", res)
