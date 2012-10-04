@@ -26,7 +26,7 @@ def create_pool(figure_pairs):
   """
   figure_pairs = list(figure_pairs)
   accept_all_filter = Filter(lambda old, new: True, 99999999, "No pattern")
-  works = lambda f: all(map(lambda fig_pair: f.accept(*fig_pair),
+  works = lambda f: all(imap(lambda fig_pair: f.accept(*fig_pair),
     figure_pairs))
   return ifilter(works,
     chain(transformation_pool(figure_pairs),
