@@ -1,6 +1,7 @@
 from itertools import *
 from src.filter import *
 from src.pool.transforms import transformation_pool
+from pprint import pprint
 
 def fetch_pools(grid, direction):
   """
@@ -28,8 +29,10 @@ def create_pool(figure_pairs):
   accept_all_filter = Filter(lambda old, new: True, 99999999, "No pattern")
   works = lambda f: all(imap(lambda fig_pair: f.accept(*fig_pair),
     figure_pairs))
+  tp = list(transformation_pool(figure_pairs))
+  pprint(len(tp))
   return ifilter(works,
-    chain(transformation_pool(figure_pairs),
+    chain(tp,
     [accept_all_filter]))
 
 def positions(n, direction):

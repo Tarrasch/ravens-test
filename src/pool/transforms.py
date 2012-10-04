@@ -58,7 +58,7 @@ def create_filter(selector, modification, copy):
 
 def transformation_pool(figure_pairs):
   return productify(set(concat_map(transformation_pool_,
-    figure_pairs)), 2)
+    figure_pairs)), 4)
 
 def productify(transformers, r):
   uncomposeds = concat_map(lambda i: product(transformers, repeat=i), range(r))
