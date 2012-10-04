@@ -1,0 +1,131 @@
+---
+  grid:
+    [
+      [
+
+        [
+          {
+            circle: circle,
+            line: 90,
+          },
+        ],
+
+        [
+          {
+            circle: circle,
+          },
+        ],
+
+        [
+          {
+            circle: circle,
+            line: 0,
+          },
+        ],
+      ],
+
+      [
+
+        [
+          {
+            square: square,
+            line: 0,
+          },
+        ],
+
+        [
+          {
+            square: square,
+            line: 90,
+          },
+        ],
+
+        [
+          {
+            square: square,
+          },
+        ],
+      ],
+
+      [
+
+        [
+          {
+            cross: cross,
+          },
+        ],
+
+        [
+          {
+            cross: cross,
+            line: 0,
+          },
+        ],
+
+      ]
+    ]
+
+  1:
+    [
+      {
+        cross: cross,
+        line: 0,
+        line: 90,
+      },
+    ]
+
+  2:
+    [
+      {
+        circle: circle,
+      },
+    ]
+
+  3:
+    [
+      {
+        cross: cross,
+        line: 90,
+      },
+    ]
+
+  4:
+    [
+      {
+        circle: circle,
+        square: square,
+      },
+    ]
+
+  5:
+    [
+      {
+        circle: circle,
+        line: 90,
+      },
+    ]
+
+  6:
+    [
+      {
+        square: square,
+        line: 90,
+      },
+    ]
+
+  7:
+    [
+      {
+        square: square,
+        cross: cross,
+      },
+    ]
+
+  8:
+    [
+      {
+        line: 0,
+        line: 90,
+      },
+    ]
+
