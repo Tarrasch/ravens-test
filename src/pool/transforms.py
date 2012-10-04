@@ -27,7 +27,7 @@ class Transformer(Filter):
 
   @staticmethod
   def identity_transformer():
-    t = Transformer(lambda fig: fig, 0, "Identity-transformer (does nothing)")
+    t = Transformer(lambda fig: fig, 0, "Identity-transformer")
     t.compose = lambda other: other
     return t
 
