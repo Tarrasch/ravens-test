@@ -23,7 +23,7 @@
             circle: circle,
           },
           {
-            line: 0,
+            line: v0,
           },
         ],
       ],
@@ -35,7 +35,7 @@
             square: square,
           },
           {
-            line: 0,
+            line: v0,
           },
         ],
 
@@ -44,7 +44,7 @@
             square: square,
           },
           {
-            line: 90,
+            line: v90,
           },
         ],
 
@@ -68,7 +68,7 @@
             cross: cross,
           },
           {
-            line: 0,
+            line: v0,
           },
         ],
 
@@ -81,10 +81,10 @@
         cross: cross,
       },
       {
-        line: 0,
+        line: v0,
       },
       {
-        line: 90,
+        line: v90,
       },
     ]
 
@@ -101,7 +101,7 @@
         cross: cross,
       },
       {
-        line: 90,
+        line: v90,
       },
     ]
 
@@ -121,7 +121,7 @@
         circle: circle,
       },
       {
-        line: 90,
+        line: v90,
       },
     ]
 
@@ -131,7 +131,7 @@
         square: square,
       },
       {
-        line: 90,
+        line: v90,
       },
     ]
 
@@ -148,10 +148,10 @@
   8:
     [
       {
-        line: 0,
+        line: v0,
       },
       {
-        line: 90,
+        line: v90,
       },
     ]
 
