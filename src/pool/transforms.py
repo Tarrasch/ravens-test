@@ -72,4 +72,4 @@ def transformation_pool_(figure_pair):
   transform_ingredients = product(infer_selectors(figure_pair[0]),
       infer_modifiers(figure_pair),
       ["inplace edit", "copy", "remove"])
-  return imap(cf, transform_ingredients) # TODO: add composition later
+  return imap(cf, transform_ingredients)
