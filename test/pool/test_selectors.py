@@ -1,6 +1,7 @@
 import unittest
 from src.pool.selectors import *
 from itertools import *
+from pprint import pprint
 import src
 
 def split_on_condition(seq, condition):
@@ -64,3 +65,14 @@ class TestSelectorFunctions(unittest.TestCase):
     # Note! Now y=1 is max, this is "only interesting" case!
     self.assertTrue (v(*split_on_condition(fig_in, lambda sf: sf["y"]==1)))
     self.assertTrue (v(*split_on_condition(fig_in, lambda sf: sf["y"]==0)))
+
+    # A selector for having a property to a specific value
+    fig = [{"a": "a", "b": "b", "c": "c"}]
+    tbt = map(lambda kv: dict([(kv[0], kv[1])]), (product("abc", repeat=2)))
+    v = get_validator(fig)
+    key_is_value = lambda d: d.keys() == d.values()
+    pprint (split_on_condition(tbt, key_is_value))
+    self.assertTrue (v(*split_on_condition(tbt[0:3], key_is_value)))
+    self.assertTrue (v(*split_on_condition(tbt[3:6], key_is_value)))
+    self.assertTrue (v(*split_on_condition(tbt[6:9], key_is_value)))
+    self.assertTrue (v(*split_on_condition(tbt[5:9], key_is_value)))
