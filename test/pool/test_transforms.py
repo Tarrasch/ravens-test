@@ -19,12 +19,12 @@ class TestTransformerFunctions(unittest.TestCase):
     src.pool.transforms.normalize = lambda x: x
     selector = simpleSelector(lambda sf: sf == "b", 3, "")
     modifier = Modifier(lambda sf: sf + "c", 5, "")
-    filt1 = create_filter(selector, modifier, False)
+    filt1 = create_filter(selector, modifier, "inplace")
     self.assertEqual(filt1.punishment, 8)
     fig = ["a", "b"]
     self.assertFalse(filt1.accept(fig, []))
     self.assertTrue(filt1.accept(fig, ["a", "bc"]))
-    filt1 = create_filter(selector, modifier, True)
+    filt1 = create_filter(selector, modifier, "copy")
     self.assertTrue(filt1.accept(fig, ["a", "bc", "b"]))
 
   def test_productify(self):

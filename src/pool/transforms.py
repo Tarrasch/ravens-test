@@ -37,21 +37,22 @@ class Transformer(Filter):
 def normalize(dicts):
   return sorted(map(lambda dic: sorted(dic.iteritems()), dicts))
 
-def create_filter(selector, modification, copy):
+def create_filter(selector, modification, action):
   def transform(fig):
     sfselects = selector.mk_subfig_selector(fig)
     def apply(subfig):
-      if sfselects(subfig):
-        yield modification.modify(subfig)
-        if copy:
+      if action != "remove":
+        if sfselects(subfig):
+          yield modification.modify(subfig)
+          if action == "copy":
+            yield subfig
+        else:
           yield subfig
-      else:
-        yield subfig
     return list(concat_map(apply, fig))
 
   punishment = selector.punishment + modification.punishment
   message = "for (%s) %s (%s)" % (selector.message,
-                                  "copy with" if copy else "modify",
+                                  action,
                                   modification.message)
   return Transformer(transform, punishment, message)
 
@@ -70,5 +71,5 @@ def transformation_pool_(figure_pair):
   cf = lambda triple: create_filter(*triple)
   transform_ingredients = product(infer_selectors(figure_pair[0]),
       infer_modifiers(figure_pair),
-      [False, True])
+      ["inplace edit", "copy", "remove"])
   return imap(cf, transform_ingredients) # TODO: add composition later
