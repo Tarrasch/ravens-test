@@ -12,7 +12,7 @@ class Modifier:
 
 def infer_modifiers(figure_pair):
   fig_A, fig_B = figure_pair
-  yield Modifier(lambda x: x, 10, "no modification")
+  yield Modifier(lambda x: x, 0, "no modification")
   all_keys = frozenset(concat_map(lambda x: x.keys(), fig_A+fig_B))
   for key in all_keys:
     # Becoming capability
@@ -32,7 +32,7 @@ def infer_modifiers(figure_pair):
 
   for subfig_B in fig_B:
     modifier = lambda _subfig, subfig_B = subfig_B: subfig_B
-    yield Modifier(modifier, 10, "set to `%s`" % (subfig_B))
+    yield Modifier(modifier, 60, "set to `%s`" % (subfig_B))
 
 
 def map_fig(modifier, key):

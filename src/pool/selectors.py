@@ -27,7 +27,7 @@ def infer_selectors(fig):
           return selector
         yield Selector(
               give_mk_subfig_selector,
-              10,
+              30,
               "%s by %s" % (desc, key))
     # Key is as one of known keys
     else:
@@ -35,6 +35,6 @@ def infer_selectors(fig):
         selector = lambda subfig, value=value, key=key: subfig.get(key) == value
         yield simpleSelector(
               selector,
-              10,
+              30,
               "key `%s` is `%s`" % (key, value))
 
