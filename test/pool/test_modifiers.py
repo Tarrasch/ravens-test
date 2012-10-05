@@ -43,3 +43,8 @@ class TestSelectorFunctions(unittest.TestCase):
     go = get_all_modifier([sec_0], [sec_90])
     self.assertIn(sec_0, go(sec_m90))
 
+    # Test that it can copy whole subfig
+    fig_A = [{"a":"a", "b": "b"}]
+    fig_B = [{"c":"c", "d": "d"}]
+    go = get_all_modifier(fig_A, fig_B)
+    self.assertIn(fig_B[0], go({"e":"e", "f":"f"}))
