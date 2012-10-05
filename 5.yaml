@@ -6,7 +6,9 @@
         [
           {
             circle: circle,
-            line: 90,
+          },
+          {
+            line: v90,
           },
         ],
 
@@ -19,6 +21,8 @@
         [
           {
             circle: circle,
+          },
+          {
             line: 0,
           },
         ],
@@ -29,6 +33,8 @@
         [
           {
             square: square,
+          },
+          {
             line: 0,
           },
         ],
@@ -36,6 +42,8 @@
         [
           {
             square: square,
+          },
+          {
             line: 90,
           },
         ],
@@ -58,6 +66,8 @@
         [
           {
             cross: cross,
+          },
+          {
             line: 0,
           },
         ],
@@ -69,7 +79,11 @@
     [
       {
         cross: cross,
+      },
+      {
         line: 0,
+      },
+      {
         line: 90,
       },
     ]
@@ -85,6 +99,8 @@
     [
       {
         cross: cross,
+      },
+      {
         line: 90,
       },
     ]
@@ -93,6 +109,8 @@
     [
       {
         circle: circle,
+      },
+      {
         square: square,
       },
     ]
@@ -101,6 +119,8 @@
     [
       {
         circle: circle,
+      },
+      {
         line: 90,
       },
     ]
@@ -109,6 +129,8 @@
     [
       {
         square: square,
+      },
+      {
         line: 90,
       },
     ]
@@ -117,6 +139,8 @@
     [
       {
         square: square,
+      },
+      {
         cross: cross,
       },
     ]
@@ -125,6 +149,8 @@
     [
       {
         line: 0,
+      },
+      {
         line: 90,
       },
     ]
