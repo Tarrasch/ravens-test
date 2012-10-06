@@ -9,6 +9,7 @@ from src.filter import *
 from src.pool.helpers import *
 from src.pool.selectors import infer_selectors
 from src.pool.modifiers import infer_modifiers
+from src.work_print import work_print
 
 class Transformer(Filter):
   def __init__(self, transform, punishment, message):
@@ -64,6 +65,7 @@ def transformation_pool(figure_pairs):
 def productify(transformers, r):
   uncomposeds = concat_map(lambda i: product(transformers, repeat=i), range(r))
   def compose_transformers(ts):
+    work_print()
     return reduce(lambda t1, t2: t1.compose(t2), ts, Transformer.identity_transformer())
   return map(compose_transformers, uncomposeds)
 

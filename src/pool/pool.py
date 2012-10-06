@@ -2,6 +2,7 @@ from itertools import *
 from src.filter import *
 from src.pool.transforms import transformation_pool
 from src.pool.selectorfilter import selectorfilter_pool
+from src.work_print import work_print
 from pprint import pprint
 
 def fetch_pools(grid, direction):
@@ -28,8 +29,9 @@ def create_pool(figure_pairs):
   """
   figure_pairs = list(figure_pairs)
   accept_all_filter = Filter(lambda old, new: True, 99999999, "No pattern")
-  works = lambda f: all(imap(lambda fig_pair: f.accept(*fig_pair),
-    figure_pairs))
+  def works(f):
+    work_print
+    return all(imap(lambda fig_pair: f.accept(*fig_pair), figure_pairs))
   tp = list(transformation_pool(figure_pairs))
   pprint(len(tp))
   sp = list(selectorfilter_pool(figure_pairs))
