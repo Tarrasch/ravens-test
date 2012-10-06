@@ -71,5 +71,5 @@ def transformation_pool_(figure_pair):
   cf = lambda triple: create_filter(*triple)
   transform_ingredients = product(infer_selectors(figure_pair[0]),
       infer_modifiers(figure_pair),
-      ["inplace edit", "copy", "remove"])
+      ["inplace", "copy", "remove"])
   return imap(cf, transform_ingredients)
