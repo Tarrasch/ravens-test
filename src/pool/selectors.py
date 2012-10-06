@@ -17,7 +17,7 @@ def infer_selectors(fig):
   yield simpleSelector(lambda subfig: True, 0, "All")
   all_keys = frozenset(concat_map(lambda x: x.keys(), fig))
   for key in all_keys:
-    values = map(lambda x: x.get(key), fig)
+    values = frozenset(map(lambda x: x.get(key), fig))
     # Max/min capability
     if "__cmp__" in dir(iter(values).next()): # Number like
       minn = lambda xs: min(chain([99999], xs))
