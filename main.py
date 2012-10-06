@@ -11,7 +11,6 @@ method = solve              # Uncomment to just write the answer number
 def main():
   for x in range(1,9):
     file_path = "reps/2-%s.txt" % x
-    file_path = "%s.yaml" % x
     if os.path.exists(file_path):
       tree = parse(file_path)
       ans = method(tree)
