@@ -1,6 +1,7 @@
 from itertools import *
 from src.filter import *
 from src.pool.transforms import transformation_pool
+from src.pool.selectorfilter import selectorfilter_pool
 from pprint import pprint
 
 def fetch_pools(grid, direction):
@@ -31,8 +32,10 @@ def create_pool(figure_pairs):
     figure_pairs))
   tp = list(transformation_pool(figure_pairs))
   pprint(len(tp))
+  sp = list(selectorfilter_pool(figure_pairs))
   return ifilter(works,
     chain(tp,
+    sp,
     [accept_all_filter]))
 
 def positions(n, direction):
