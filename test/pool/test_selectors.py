@@ -71,7 +71,6 @@ class TestSelectorFunctions(unittest.TestCase):
     tbt = map(lambda kv: dict([(kv[0], kv[1])]), (product("abc", repeat=2)))
     v = get_validator(fig)
     key_is_value = lambda d: d.keys() == d.values()
-    pprint (split_on_condition(tbt, key_is_value))
     self.assertTrue (v(*split_on_condition(tbt[0:3], key_is_value)))
     self.assertTrue (v(*split_on_condition(tbt[3:6], key_is_value)))
     self.assertTrue (v(*split_on_condition(tbt[6:9], key_is_value)))
