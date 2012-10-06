@@ -12,10 +12,10 @@ answers the questions.
 
       $ python ArashRouhani_Project_2.py
 
-Works for me. In the unlikely case that you don't have pyyaml, I've
-included the lib in the zip. If that is not working because you have
-python 3, you can download the source [here] and replace the `yaml`
-folder with the one in the **source** (either `.zip` or `.tar.gz`)
+Works for me. It takes one minute on my machine.  In the unlikely case that you
+don't have pyyaml, I've included the lib in the zip. If that is not working
+because you have python 3, you can download the source [here] and replace the
+`yaml` folder with the one in the **source** (either `.zip` or `.tar.gz`)
 archive from the `lib3` folder.
 
 ## Experementing with the programs verbosity

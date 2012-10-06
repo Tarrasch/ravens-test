@@ -21,7 +21,7 @@ def selectorfilter_pool(figure_pairs):
   return infer_selectorfilters(sum(sum(figure_pairs, []), []))
 
 def infer_selectorfilters(fig):
-  for sz in range(1, 4):
+  for sz in range(1, 6):
     punishment = 1000*max(10**(5-sz), 1)
     all_keys = frozenset(concat_map(lambda x: x.keys(), fig))
     get_values = lambda key: frozenset(map(lambda sub: sub.get(key,
