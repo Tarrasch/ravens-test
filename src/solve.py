@@ -5,9 +5,15 @@ from src.filter import select_best_filter
 import operator
 
 def solve(tree):
-  return min(solve_verbose(tree), key=operator.itemgetter(2))[0]
+  return solve_verbose(tree)[0]
 
 def solve_verbose(tree):
+  return min(solve_very_verbose(tree), key=operator.itemgetter(2))
+
+def solve_very_verbose(tree):
+  return list(solve_very_verbose_(tree))
+
+def solve_very_verbose_(tree):
   grid = tree["grid"]
   filterss = get_filterss(grid) # Only to memoize it
   alternatives = tree.keys()

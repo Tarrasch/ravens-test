@@ -1,9 +1,25 @@
+import os.path
 from pprint import pprint
-from src.solve import solve_verbose
+from src.solve import *
 from src.parser import parse
 
+method = solve              # Uncomment to just write the answer number
+# method = solve_verbose      # Uncomment to motivate it's answer
+# method = solve_very_verbose # Uncomment to compare motivations between choices
 
-tree = parse("6.yaml")
 
-pprint(tree)
-pprint(list(solve_verbose(tree)))
+def main():
+  for x in range(1,9):
+    file_path = "reps/2-%s.txt" % x
+    file_path = "%s.yaml" % x
+    if os.path.exists(file_path):
+      tree = parse(file_path)
+      ans = method(tree)
+      print "--------------------------------------------------------"
+      print "Solution to problem %s is:" % (x)
+      pprint(ans)
+      print "\n\n\n"
+    else:
+      print "Didn't find representation for file %s" % x
+
+main()

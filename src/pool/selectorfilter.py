@@ -24,13 +24,11 @@ def infer_selectorfilters(fig):
   for sz in range(1, 4):
     punishment = 1000*max(10**(5-sz), 1)
     all_keys = frozenset(concat_map(lambda x: x.keys(), fig))
-    print(all_keys)
     get_values = lambda key: frozenset(map(lambda sub: sub.get(key,
       "NotNone"), fig))
     get_values = lambda key: frozenset(sub[key] for sub in fig if key in sub)
     all_keyvalues = concat_map(lambda k: [[k, v] for v in get_values(k)], all_keys)
     for keyvalues in combinations(all_keyvalues, sz):
-      pprint(keyvalues)
       def mk_selector(keyvalues):
         def check(subfig):
           l = [subfig.get(k) == v for k, v in keyvalues]
