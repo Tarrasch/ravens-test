@@ -18,6 +18,46 @@ python 3, you can download the source [here] and replace the `yaml`
 folder with the one in the **source** (either `.zip` or `.tar.gz`)
 archive from the `lib3` folder.
 
+## Experementing with the programs verbosity
+
+Also, please checking in `ArashRouhani_Project_2.py`. By uncommenting a
+few lines, then my program will output more verbose information, like say "why"
+it chooses one solution over another. For instance, I tried this on the second
+problem. How to do this should be clear by looking in the file
+`ArashRouhani_Project_2.py`. The reason why I didn't write a command line
+parser is because I know that the TA that graded me the last time had python
+`2.6`, and from the switch to `2.7` they changed parsing libraries.
+
+This is for example what it outputs when solving the second problem in the
+verbose mode:
+
+    --------------------------------------------------------
+    Solution to problem 2 is:
+    (2,
+     [(for (All) inplace (set `shape`s to circle), 'down'),
+      (for (All) inplace (inc `xpos`s by 20) -- and then for (All) copy (set
+      `xpos`s to -20),
+      'right')],
+    30)
+
+Also, please note that my answer for problem 1 is 6. I discussed this with a
+couple of friends and they seemed to agree that 4 is more likely for many
+reasons. However, my program says 6 and here is it's motivation
+
+    --------------------------------------------------------
+    Solution to problem 1 is:
+    (6,
+     [(for (All) inplace (inc `start`s by -90), 'down'),
+      (for (All) inplace (inc `start`s by 90), 'right')],
+    20)
+
+In other words, It finds the pattern that a move in the `down` direction is to
+decrease the sectors starting angle by 90 degrees. For right direction it
+insteads chooes to increase it by 90.
+
+The `20` is the penalty it gives to the best answer.
+
+
 # Below here is not finished
 
 ## Terminology
