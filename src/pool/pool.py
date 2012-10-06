@@ -47,6 +47,7 @@ def positions(n, direction):
       y = y0 + dy
       if dy > 0 and dx > 0:
         y %= n
+        x %= n
       res = ((y0, x0), (y, x))
       if last not in res and y < n and x < n:
         yield res
