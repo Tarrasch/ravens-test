@@ -1,10 +1,9 @@
-import yaml
 from pprint import pprint
 from src.solve import solve_verbose
+from src.parser import parse
 
 
-stream = open("5.yaml", 'r')
-tree = yaml.load(stream)
+tree = parse("6.yaml")
 
 pprint(tree)
 pprint(list(solve_verbose(tree)))
