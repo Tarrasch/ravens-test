@@ -1,3 +1,4 @@
+from itertools import chain
 from src.pool.helpers import concat_map
 
 class Selector:
@@ -18,8 +19,10 @@ def infer_selectors(fig):
   for key in all_keys:
     values = map(lambda x: x.get(key), fig)
     # Max/min capability
-    if "__cmp__" in dir(values[0]): # Number like
-      for fold, desc in [(min, "min"), (max, "max")]:
+    if "__cmp__" in dir(iter(values).next()): # Number like
+      minn = lambda xs: min(chain([99999], xs))
+      maxx = lambda xs: max(chain([-99999], xs))
+      for fold, desc in [(minn, "min"), (maxx, "max")]:
         def give_mk_subfig_selector(fig_in, fold=fold, key=key):
           values_in = map(lambda x: x.get(key), fig_in)
           v = fold(values_in)
