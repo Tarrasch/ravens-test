@@ -1,12 +1,16 @@
 import itertools
 from pprint import pprint
 
-def make_subfig(yx):
+def make_subfig(yx, d={}):
   y, x = yx
-  return { "x": x*15, "y": y*15 }
+  res = { "x": x*15, "y": y*15 }
+  res.update(d)
+  return res
 
 def make_fig(y, x):
-  return map(make_subfig, itertools.product(range(y+1), range(x+1)))
+  d = { "rot": y*180+x*180-180*3 }
+  my_make_subfig = lambda yx: make_subfig(yx, d=d)
+  return map(my_make_subfig, itertools.product(range(y+1), range(x+1)))
 
 
 y_max = 3
