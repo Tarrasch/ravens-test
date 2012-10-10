@@ -1,5 +1,5 @@
-% Arash Rouhani
 % Project 2 in Knowledge Based AI
+% Arash Rouhani
 %
 
 I've decided to split my design report into two parts, one describes my project
@@ -138,6 +138,8 @@ into one.
 
 #### Selection filters
 
+A selection filter implements `f()` like this:
+
     f(fig_A, fig_B) = select_parts_of(fig_A) == select_parts_of(fig_B)
 
 A selection filter checks if two figures are identical if you select out
@@ -202,15 +204,15 @@ To generate a transformation you basically need to define a function
 `t()` taking a figure and returning another figure. I divided this
 function into three parts.
 
-  1. Decide which subfigures you're gonna transform. We call this the
+  *  Decide which subfigures you're gonna transform. We call this the
      *selection* part. (see
      `src/pool/selectors.py`)
-  2. Decide the modification you're gonna apply. We call this the
+  *  Decide the modification you're gonna apply. We call this the
      *transformation* part. (see
      `src/pool/modifiers.py`)
-  3. Decide if you're gonna apply the modification in place of first
-     make a copy of the subfigure ant then apply it. We call this the
-     *action* part.
+  *  Decide if you're gonna keep copies of the figures you modify.  We call
+     this the *action* part.
+
 
 Some examples where this works very well:
 
@@ -238,16 +240,16 @@ only refer to one subfigure, but it works exactly how we want it too.
 
 ### Generating selection filters
 
-A selection filter implements a filter with *f()* defined like
+Remember, a selection filter implements a filter with *f()* defined like
 
     f(fig_A, fig_B) = select_parts_of(fig_A) == select_parts_of(fig_B)
 
-I let `select_parts_of` be a function that simply goes through the
-figure (which is a list of subfigures) and then returns a smaller list
-by selecting out only some of the subfigures. A figure is selected if it
-fulfills a selection function say *s()*. Hence, each selection filter I
-construct will have the same *select_parts_of()* but with a different
-*s()*. Here is how I construct the *s()* functions.
+I let `select_parts_of` be a function that simply goes through the figure
+(which is a list of subfigures) and then selecting out only some of the
+subfigures. A subfigure is selected if it fulfills a selection function say
+*s()*.  Hence, each selection filter I construct will have the same
+*select_parts_of()* but with a different *s()*. Here is how I construct the
+*s()* functions.
 
   1. Create a set with all possible property-value pairs
   2. Loop through all the subsets of size *sz*
@@ -259,17 +261,26 @@ more ways to pick out the subset and more filters will be produced. I
 consider a filter as "smarter" and hence having less punishment the
 larger *sz* is.
 
-An example on how this works. In the fifth image, you filter on the
-property-value subset `{('circle', 'circle'), ('square', 'square'),
-('cross', 'cross')}` in the right direction. Here `('circle', 'circle')`
-represents a property-value tuple. The properties don't need to be
-distinct. For example in the diagonal direction the subset is `{('line',
-'v0'), ('line', 'v90')}`. In human text this can be interpreted as "The
-line parts of either rotation don't change on diagonal transitions".
-The arbitrarily looking properties and values are taken from my
-representation.
+This works great in the fifth image, you filter on the property-value subset
+`{('circle', 'circle'), ('square', 'square'), ('cross', 'cross')}` in the right
+direction. Here `('circle', 'circle')` represents a property-value tuple. The
+properties don't need to be distinct. For example in the diagonal direction the
+subset is `{('line', 'v0'), ('line', 'v90')}`. In human text this can be
+interpreted as "The line parts of either rotation don't change on diagonal
+transitions".  The properties and values I used in this paragraph are taken
+from my representation of the fifth image.
 
 # Part 2 - A researchers point of view
+
+## Ablation experiments
+
+Luckily, the structure of my program is suitable for ablation
+experiments.  In the files
+`src/pool/{selectors,modifiers,selectorfilter}.py`, each `yield`
+statement corresponds to one way of reasoning and can be commented out.
+Also, you can drop the number of compositions you do for the
+transformation filters, that means the program can only do single-step
+transformations.
 
 [pyyaml]: http://pypi.python.org/pypi/PyYAML
 
