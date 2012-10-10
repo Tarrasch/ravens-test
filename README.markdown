@@ -282,5 +282,41 @@ Also, you can drop the number of compositions you do for the
 transformation filters, that means the program can only do single-step
 transformations.
 
+So, let's get our hands dirty by doing some ablation experiments, I will run
+the modified programs on the six given and the two extra images. The experiments
+I've done are only a few of all possible combinations to remove features.
+
+### Removing transformation compositions
+
+Wow! The programs runs a lot faster now. We observe that the the set of
+problems solved now are only *1, 4, 5, 6*. The fifth problem is still solved
+because it relied on the selection filters not the transformation filters. As
+for 1, 4 and 6 it's simply because that they only need one transformation.
+
+### Removing the modification part in transformation filters
+
+If I remove the possiblity to set a specific property to a value or do
+increments/decrements on that value. We see that only *4 and 5* are solveable.
+5 As of earlier reason and 4 because the subfigures don't have only parts of
+them modified.
+
+### Removing the selecting part in transformation filters
+
+Removing the possiblity to select the subfigures who have the maximum/minimum
+value had a very interesting consequences. I thought that it would no longer
+solve the 6th problem, after all, the max value selector was designed with that
+image in mind. However, it seems that a selection filter saw the unique pattern
+that the subfigures with `x=0` stays the same in the right direction and the
+subfigures with `y=0` stays the same in the down direction! I never thought
+about that pattern! Indeed, that solution reaches the correct answer for the
+wrong reason and a "`L`-shaped" figure fits that pattern too.
+
+### Removing the action part in transformation filters
+
+If we don't allow copying or deletion of subfigures, exactly what we expected
+happens, it solves *all except for 2, 6 and 8*.
+
+
+
 [pyyaml]: http://pypi.python.org/pypi/PyYAML
 
