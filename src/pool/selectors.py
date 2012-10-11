@@ -14,7 +14,7 @@ def simpleSelector(subfig_selector, punishment, message):
   return Selector(lambda _fig: subfig_selector, punishment, message)
 
 def infer_selectors(fig):
-  # yield simpleSelector(lambda subfig: True, 0, "All")
+  yield simpleSelector(lambda subfig: True, 0, "All")
   all_keys = frozenset(concat_map(lambda x: x.keys(), fig))
   for key in all_keys:
     values = frozenset(map(lambda x: x.get(key), fig))
@@ -36,8 +36,8 @@ def infer_selectors(fig):
     else:
       for value in values:
         selector = lambda subfig, value=value, key=key: subfig.get(key) == value
-        # yield simpleSelector(
-        #       selector,
-        #       30,
-        #       "key `%s` is `%s`" % (key, value))
+        yield simpleSelector(
+              selector,
+              30,
+              "key `%s` is `%s`" % (key, value))
 

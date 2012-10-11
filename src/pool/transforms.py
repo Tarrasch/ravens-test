@@ -42,13 +42,13 @@ def create_filter(selector, modification, action):
   def transform(fig):
     sfselects = selector.mk_subfig_selector(fig)
     def apply(subfig):
-      if sfselects(subfig):
-        if action != "remove":
+      if action != "remove":
+        if sfselects(subfig):
           yield modification.modify(subfig)
           if action == "copy":
             yield subfig
-      else:
-        yield subfig
+        else:
+          yield subfig
     return list(concat_map(apply, fig))
 
   punishment = selector.punishment + modification.punishment
@@ -60,7 +60,7 @@ def create_filter(selector, modification, action):
 
 def transformation_pool(figure_pairs):
   return productify(set(concat_map(transformation_pool_,
-    figure_pairs)), 4)
+    figure_pairs)), 3)
 
 def productify(transformers, r):
   uncomposeds = concat_map(lambda i: product(transformers, repeat=i), range(r))
@@ -73,5 +73,5 @@ def transformation_pool_(figure_pair):
   cf = lambda triple: create_filter(*triple)
   transform_ingredients = product(infer_selectors(figure_pair[0]),
       infer_modifiers(figure_pair),
-      ["copy", "remove"])
+      ["inplace", "copy", "remove"])
   return imap(cf, transform_ingredients)
