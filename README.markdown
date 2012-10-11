@@ -2,20 +2,17 @@
 % Arash Rouhani
 %
 
-I've decided to split my design report into two parts, one describes my project
-as a software engineer would, in the second part I'll analyze my project as a
-researcher. But first, some basic terminology.
-
 ## Terminology
 
-I'm given 6 *images*, each containing a grid of *figures* and 4 to 8
-figure alternatives. A figure usually contains 1-3 *subfigures*, like a
-circle or a rectangle. In other words, a figure is a list of subfigures.
-Each subfigure contains *properties* with *values*.
+I'm given 6 *images*, each containing a *grid* of *figures* and the
+*program* must choose between 4 to 8 *figure alternatives*. A figure usually
+contains 1-3 *subfigures*, like a circle or a rectangle. In other words,
+a figure is a list of subfigures.  Each subfigure contains *properties*
+with *values*.
 
 A *transition* is seen as a pair of two figures. Intuitively the first
 figure is the original one and if you "follow the pattern" you'll get
-the second figure. So I'll only use the word transition when a pattern
+the second figure. So I'll only use the term transition when a pattern
 is in context.
 
 ## Running the program
@@ -61,7 +58,7 @@ However, my program says 6 and here is it's motivation
       (for (All) inplace (inc `start`s by 90), 'right')],
     20)
 
-In other words, It finds the pattern that a move in the `down` direction
+The `down` direction pattern
 is to decrease the sectors starting angle by 90 degrees, which simply
 means rotating clockwise by 90 degrees. For right direction it instead
 choose to increase it by 90.
@@ -86,9 +83,9 @@ For each alternative the program looks at, it will look for a pattern in
 three directions: Downwards, rightwards and diagonally (down-right
 diagonally only though). The motivation for the diagonal direction is
 that the fifth problem becomes easier when contemplating the diagonal.
-In the end my program will choose the alternative that performed best
-performed best on it's two most favorable directions. This way, we'll can
-handle each direction independently, this greatly simplifies our task.
+In the end my program will choose the figure alternative that performed
+best on it's two most favorable directions. This way, we'll can handle
+each direction independently, this greatly simplifies our task.
 
   * See `src/directions.py`
 
@@ -96,7 +93,9 @@ handle each direction independently, this greatly simplifies our task.
 
 A filter is simply a function representing a pattern. The function `f()`
 will take two figures as inputs. `f(fig_A, fig_B)` will return true only if a
-transition from `fig_A` to `fig_B` is following the pattern.
+transition from `fig_A` to `fig_B` is following the pattern. It's called
+a filter because you can filter out the wrong answers if you have the
+correct filter.
 
 In order to make natural patterns compare better to contrived patterns.
 A filter is also holding a `punishment` number. For value inspection
@@ -178,8 +177,7 @@ The algorithms worth discussing are:
   * Generating selection filters
 
 I choose these because these are the components where different minds
-would implement differently. Meanwhile the other parts doesn't
-require any creativity.
+would implement differently.
 
 ### Generating transformation
 
@@ -193,23 +191,24 @@ function into three parts.
   *  Decide the modification you're gonna apply. We call this the
      *transformation* part. (see
      `src/pool/modifiers.py`)
-  *  Decide if you're gonna keep copies of the figures you modify.  We call
-     this the *action* part.
-
+  *  Decide if you're gonna keep copies of the subfigures you modify or if
+     you are going to delete it altogether.  We call this the *action*
+     part.
 
 Some examples where this works very well:
 
   * In image two in the downwards direction, when squares becomes
     circles, you build the transformation like this: Let the selection
     part be *select all* and the transformation part be *set property
-    'shape' to value 'circle'*. Since we are gonna modify both subfigures
-    in the rightmost downward direction we see the convenience in having
-    a selection part that can be specified to modify all subfigures.
+    'shape' to value 'circle'*. Since we are gonna modify both
+    subfigures in the downward direction to the right, we see the
+    convenience in having a selection part that can be specified to
+    modify all subfigures.
 
   * In the last image, the one with duplication of triangles. We see
     that the selection *pick all subfigures with maximum x-coordinate*
     together with a copy-modification *increase the x-coordinate*
-    very simply captures the rightward directions pattern.
+    very simply captures the rightward direction's pattern.
 
 ### Combining two transformation filters
 
@@ -227,12 +226,11 @@ Remember, a selection filter implements a filter with *f()* defined like
 
     f(fig_A, fig_B) = select_parts_of(fig_A) == select_parts_of(fig_B)
 
-I let `select_parts_of` be a function that simply goes through the figure
-(which is a list of subfigures) and then selecting out only some of the
-subfigures. A subfigure is selected if it fulfills a selection function say
-*s()*.  Hence, each selection filter I construct will have the same
-*select_parts_of()* but with a different *s()*. Here is how I construct the
-*s()* functions.
+I let `select_parts_of` be a function that returns a subset of a figure
+(a list of subfigures). A subfigure is selected if it fulfills
+a selection criteria, say when *s(subfig) == 1*.  Hence, all selection filter have the
+same *select_parts_of()* function but with a different *s()*. Here is
+how I construct the *s()* functions.
 
   1. Create a set with all possible property-value pairs
   2. Loop through all the subsets of size *sz*
@@ -252,6 +250,36 @@ subset is `{('line', 'v0'), ('line', 'v90')}`. In human text this can be
 interpreted as "The line parts of either rotation don't change on diagonal
 transitions".  The properties and values I used in this paragraph are taken
 from my representation of the fifth image.
+
+### Complexity of the algorithms
+
+If we have *n* figures each with *m* subfigures each with *k*
+properties.
+
+#### Selection filters
+
+There are in total *nmk* property-value pairs, we choose *c* (and less)
+of those.  In my program I set it to `5` but it's a small constant. The
+selection filters will be generated in *O(choose(nmk, c))*.  In practice
+a lot of the property-value pairs are equal across figures though.
+
+#### Transformation filters
+
+The modification part will for each *k* properties generate *m^2^*
+modifiers. Result **km^2^**. The selector part is similar,
+**km**. The actions constitutes of copying, in place editing and
+removing hence **3**.
+
+There are **O(n)** image pairs, totally **O(3nk^2^m^3^)** which is the
+base for the composing with depth *d*, all in all
+**O((3nk^2^m^3^)^d^)**. In practice there are some more modifiers and
+selectors produced, however, duplicates are removed before the set
+product operation which exponates by *d*. It might now be clear why I
+set *d* to just 2, the complexity is really terrible. Say *n*, *k* and *m*
+are set to 3 and *d* to 2. The expression will then evaluate to `4782969`.
+
+So one sorely needed improvement for this program would have been to
+introduce heuristical pruning.
 
 ## Analysis of architecture
 
@@ -314,14 +342,13 @@ goes `.. --> vertical --> horizontal --> nonexistent --> ..`. A similar
 pattern exists for the diagonal direction but with the shape types
 instead.
 
-# Part 2 - A researchers point of view
+\newpage
 
-## An example
+## An example with an extra figure
 
-Here is an example showing that my solution scales polynomially in the
-number of subfigures, it's rather the complexity of the pattern that
-pushes the boundraries. The representation of this file is in
-`reps/t1.txt`
+Here is an example showing both the strengths and weaknesses of how I
+degsigned the transformation filters. The representation of this file is
+in `reps/t1.txt`
 
     +--------------+----------------+---------------+
     |              |                |               |
@@ -361,18 +388,18 @@ pushes the boundraries. The representation of this file is in
 In this visual representation each `#` is one subfigure. So the biggest
 figure has 17 subfigures.
 
-My program doesn't solve this. But I thought it would! For my program to
-have a chance at this I tweaked the parameters a bit. The composition
-was set to depth 3 so it can add one block for all the three kinds of
-selection (max x, min x, max y). Furthermore, I also removed most features.
-The features it had selectionwise is *max/min by x/y* and
-*increment/decrement x/y*. Yet the program can't solve this?
+For my program to have a chance at this I tweaked the parameters a bit.
+The composition was set to depth 3 so it can add one block for all the
+three kinds of selection (max x, min x, max y). Furthermore, I narrowed
+down the functionality to *selecct max/min by x/y* and
+*increment/decrement x/y*.
 
-In fact, I designed this particular problem to show off the power of
-composing transformation filters. At first glance it should work!  The
-problem is the figure with only one subfigure cause problems very alike
-the circular problems we had earlier. One sound transformation could be
-:
+In spite of tweaking to it's favor, my program doesn't solve this. I
+found that schocking at first!  In fact, I designed this particular
+problem to show off the power of composing transformation filters. At
+first glance it should work!  The problem is the figure with only one
+subfigure. The issue is similar to the circular one we had earlier.
+Here's the corner case, one seemingly sound transformation could be :
 
   1. Copy all figures with max x-coordinate and modify `xpos+=1`
   1. Copy all figures with min x-coordinate and modify `xpos-=1`
@@ -385,9 +412,9 @@ which will have the same y coordinate.
 
 To prove that my program otherwise works, I did run my program on a
 modified image (not pictured) where each figure in the grid is of one
-size bigger, that is having 3 more subfigures than the original problem.
-I called this representation `reps/t2.txt`. This one get solved as
-expected, here is the program output:
+size bigger, that is each having 3 more subfigures than in the pictured
+problem.  I called this representation `reps/t2.txt`. This one gets
+solved as expected, here is the program output:
 
     --------------------------------------------------------
     Solution to problem t2 is:
@@ -396,18 +423,17 @@ expected, here is the program output:
        'down'),
       (for (max by y) copy (inc `y`s by 1) -- and then for (max by x) copy (inc `x`s by 1) -- and then for (min by x) copy (inc `x`s by -1),
        'right')],
-     240),
+     240)
 
-Note, I also fixed a minor bug with how to remove images in order to produce this result.
+To produce this I also fixed a minor bug removing images.
 
-These two examples do a superb job in showing off both the
-strenghts and weaknesses in my program. The strength being that it can
-discover a quite complicated pattern and handle many subfigures. On the
-downsides, the combinatorial explosion of filters created when wanting 3
+In conclusion, these two examples show both the strenghts and weaknesses
+off my program. The strength being that it can discover a quite
+complicated pattern and handle many subfigures. On the downsides, the
+combinatorial explosion of filters created when wanting 3
 transformations required me to disable alot of features to decrease the
 amount of filters. Furthermore, it didn't solve the first problem
-because of issues with the way we compose transformations, we discussed
-this earlier in the report.
+because of issues with the way we compose transformations.
 
 
 ## Ablation experiments
