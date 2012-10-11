@@ -18,12 +18,6 @@ figure is the original one and if you "follow the pattern" you'll get
 the second figure. So I'll only use the word transition when a pattern
 is in context.
 
-# Part 1 - A software engineers point of view
-
-As a software engineer I'll say how one can run my program,
-describe the programs architecture and specify the format of my knowledge
-representation.
-
 ## Running the program
 
       $ python ArashRouhani_Project_2.py
@@ -36,13 +30,13 @@ archive from the `lib3` folder.
 
 ### Experimenting with the programs verbosity
 
-Also, please check `ArashRouhani_Project_2.py`. By uncommenting a
-few lines, then my program will output more verbose information, like say "why"
-it chooses one solution over another. For instance, I tried this on the second
-problem. How to do this should be clear by looking in the file
-`ArashRouhani_Project_2.py`. The reason why I didn't write a command line
-parser is because I know that the TA that graded me the last time had python
-`2.6`, and from the switch to `2.7` they changed parsing libraries.
+The verbosity of my program is configurable. By uncommenting a few
+lines, then my program will output more verbose information, it'll say
+"why" it chooses one solution over another. How to do this should be
+apparent by looking in the file `ArashRouhani_Project_2.py`. The reason why
+I didn't write a command line parser is because I know that the TA that
+graded me the last time had python `2.6`, and from the switch to `2.7`
+they changed parsing libraries.
 
 This is for example what it outputs when solving the second problem in the
 verbose mode:
@@ -56,9 +50,9 @@ verbose mode:
       'right')],
     30)
 
-Also, please note that my answer for problem 1 is 6. I discussed this with a
-couple of friends and they seemed to agree that 4 is more likely for many
-reasons. However, my program says 6 and here is it's motivation
+My answer for problem 1 is 6. I discussed this with a couple of friends
+and they seemed to agree that 4 is more likely for many reasons.
+However, my program says 6 and here is it's motivation
 
     --------------------------------------------------------
     Solution to problem 1 is:
@@ -74,15 +68,11 @@ choose to increase it by 90.
 
 The last `20` is the penalty it gives to the answer.
 
+## Representations
 
-## Syntax of representations
-
-The properties of the figures are only described from the subfigures
-perspective. I use the human readable `.yaml` format since that gets parsed to
-a python value using standard libraries. `.yaml` is inherently hierarchical and
-I've taken that to my advantage. Furthermore I try to follow the DRY principles
-in my representation, if the shape-property of a subfigure is not set, my
-program automatically sets it to the id of the subfigure.
+The representations describes the grid and each alternative figure as mentioned
+in the terminology. They are in the `.yaml` format so I get the parsing for
+free.
 
 ## The architecture and rationale
 
@@ -169,13 +159,6 @@ the minimum punishment score. There will in fact always be one filter
 that accepts the transition because we always generate one accept all
 filter with a very high punishment.
 
-By now the reader should have noticed that my solution entirely relies
-on that answer frame for all the ravens analogy problems is like this: *In
-direction d~1~ there is pattern p~1~ and in direction d~2~ there is
-pattern d~2~*. So in a 3 by 3 problem, if the first rightward movement has one pattern and
-the second right movement a completely different. It's unlikely that
-this program will solve it. [Move to analysis!!!]
-
   * See `src/solve.py`
 
 ### Unit tests
@@ -253,7 +236,7 @@ subfigures. A subfigure is selected if it fulfills a selection function say
 
   1. Create a set with all possible property-value pairs
   2. Loop through all the subsets of size *sz*
-  3. Define `s(subfig) = True if any property-value is in subset`
+  3. Define `s(subfig)` = True iff any property-value of subfig is in subset
 
 I loop with the variable *sz* from 2 to 5, these values
 are somewhat arbitrary, but with a higher value there are
@@ -270,7 +253,162 @@ interpreted as "The line parts of either rotation don't change on diagonal
 transitions".  The properties and values I used in this paragraph are taken
 from my representation of the fifth image.
 
+## Analysis of architecture
+
+Here is the critique and analysis of this architecture.
+
+### The general approach
+
+My solution entirely relies on that answer frame for all the ravens analogy
+problems is like this: *In direction d~1~ has pattern p~1~ and direction d~2~
+has pattern d~2~*. So in a 3 by 3 problem, if the first rightward movement has
+one pattern and the second right movement a completely different. It's unlikely
+that this program will solve it.
+
+### The modification is too general
+
+My representation for the eighth problem is a bit cheaty. Naturally, a
+straight triangle should have `rotation=0` and a flipped one
+`rotation=180`. However, I've adjusted my representation so the programs
+can see it as incremental rotations.  The core issue is of course that
+my program don't know that when we're talking about rotation, it should
+count modulo 360! Then we didn't need to contrive our representation
+like we've had. But that modification doesn't fit well in my
+architecture. But, if my program were less general in the kind of
+properties and values you can have, say if you restricted it to just
+position, rotation, color and shape. Then it's very natural to implement
+"special cases" like that the rotation should be counted modulo 360.
+
+### Circular value-transformations
+
+The transformation filters are very powerful because they can be composed.
+However, there is an interesting problem with composing the
+transformation functions.
+
+Take a look at the eighth figure again. Instead of thinking that the
+subfigures have a rotation, think of them having either `flipped=no` or
+`flipped=yes`. Now, a move in either the right or the down direction
+will cause `yes` to be `no` and `no` to become `yes`. Can two combined
+transformation filters handle this? It might seem so to begin with. Just
+construct two filters:
+
+      t_1 = for (figs where flipped=yes) inplace (set flipped=no)
+      t_2 = for (figs where flipped=no) inplace (set flipped=yes)
+
+While it seems like combining these will work as expected, it actually
+will not. Define `t(fig) = t_2(t_1(fig))`.  What happens if we throw in
+a flipped subfigure? First `t_1` will unflip it and then `t_2` will get
+an unflipped image which it will then flip back!
+
+In conclusion, the transformation filter is extremely powerful since it
+can compose with ohter transition filters to create more advanced ones.
+But alternations of a property (like flipping), which is typical for
+analogy tests, is not solved with this method.
+
+As a consequence of this weakness, I couldn't make a good enough
+transformation filter that solves the fifth image. Instead I just wrote
+a the selection filters. Note that a transformation filter would have
+worked for the fifth image if it weren't for this circular problem.  For
+the right direction one could express how the rod in a circular pattern
+goes `.. --> vertical --> horizontal --> nonexistent --> ..`. A similar
+pattern exists for the diagonal direction but with the shape types
+instead.
+
 # Part 2 - A researchers point of view
+
+## An example
+
+Here is an example showing that my solution scales polynomially in the
+number of subfigures, it's rather the complexity of the pattern that
+pushes the boundraries. The representation of this file is in
+`reps/t1.txt`
+
+    +--------------+----------------+---------------+
+    |              |                |               |
+    |              |                |       #       |
+    |              |       #        |       #       |
+    |     #        |       #        |       #       |
+    |     #        |       #        |       #       |
+    |   #####      |    #######     |   #########   |
+    |              |                |               |
+    |              |                |               |
+    +--------------+----------------+---------------+
+    |              |                |       #       |
+    |              |       #        |       #       |
+    |     #        |       #        |       #       |
+    |    ###       |     #####      |    #######    |
+    |              |                |               |
+    |              |                |               |
+    +--------------+----------------+---------------+
+    |              |                |               |
+    |              |                |               |
+    |              |       #        |               |
+    |     #        |      ###       |       ?       |
+    |              |                |               |
+    |              |                |               |
+    +--------------+----------------+---------------+
+
+          1                2                3              4                5
+    +--------------+----------------+---------------+----------------+---------------+
+    |              |                |               |                |               |
+    |              |                |       #       |                |       #       |
+    |              |       #        |       #       |       #        |       #       |
+    |     #        |      ###       |     #####     |       #        |       #       |
+    |              |                |               |       #        |       #       |
+    |              |                |               |    #######     |   #########   |
+    +--------------+----------------+---------------+----------------+---------------+
+
+In this visual representation each `#` is one subfigure. So the biggest
+figure has 17 subfigures.
+
+My program doesn't solve this. But I thought it would! For my program to
+have a chance at this I tweaked the parameters a bit. The composition
+was set to depth 3 so it can add one block for all the three kinds of
+selection (max x, min x, max y). Furthermore, I also removed most features.
+The features it had selectionwise is *max/min by x/y* and
+*increment/decrement x/y*. Yet the program can't solve this?
+
+In fact, I designed this particular problem to show off the power of
+composing transformation filters. At first glance it should work!  The
+problem is the figure with only one subfigure cause problems very alike
+the circular problems we had earlier. One sound transformation could be
+:
+
+  1. Copy all figures with max x-coordinate and modify `xpos+=1`
+  1. Copy all figures with min x-coordinate and modify `xpos-=1`
+  1. Copy all figures with max y-coordinate and modify `ypos+=1`
+
+Indeed, for each step we only select one single subfigure as desired.
+But for the figure with only one subfigure, the third step will actually
+select 3 subfigures since the first two steps each created one subfigure
+which will have the same y coordinate.
+
+To prove that my program otherwise works, I did run my program on a
+modified image (not pictured) where each figure in the grid is of one
+size bigger, that is having 3 more subfigures than the original problem.
+I called this representation `reps/t2.txt`. This one get solved as
+expected, here is the program output:
+
+    --------------------------------------------------------
+    Solution to problem t2 is:
+    (4,
+     [(for (min by x) remove -- and then for (max by y) remove -- and then for (max by x) remove,
+       'down'),
+      (for (max by y) copy (inc `y`s by 1) -- and then for (max by x) copy (inc `x`s by 1) -- and then for (min by x) copy (inc `x`s by -1),
+       'right')],
+     240),
+
+Note, I also fixed a minor bug with how to remove images in order to produce this result.
+
+These two examples do a superb job in showing off both the
+strenghts and weaknesses in my program. The strength being that it can
+discover a quite complicated pattern and handle many subfigures. On the
+downsides, the combinatorial explosion of filters created when wanting 3
+transformations required me to disable alot of features to decrease the
+amount of filters. Furthermore, it didn't solve the first problem
+because of issues with the way we compose transformations, we discussed
+this earlier in the report.
+
 
 ## Ablation experiments
 
