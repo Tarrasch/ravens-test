@@ -179,7 +179,7 @@ The algorithms worth discussing are:
 I choose these because these are the components where different minds
 would implement differently.
 
-### Generating transformation
+### Generating transformations
 
 To generate a transformation you basically need to define a function
 `t()` taking a figure and returning another figure. I divided this
@@ -253,13 +253,13 @@ from my representation of the fifth image.
 
 ### Complexity of the algorithms
 
-If we have *n* figures each with *m* subfigures each with *k*
+We have *n* figures each with *m* subfigures each with *k*
 properties.
 
 #### Selection filters
 
 There are in total *nmk* property-value pairs, we choose *c* (and less)
-of those.  In my program I set it to `5` but it's a small constant. The
+of those.  In my program I set it to `5`. The
 selection filters will be generated in *O(choose(nmk, c))*.  In practice
 a lot of the property-value pairs are equal across figures though.
 
@@ -348,7 +348,7 @@ instead.
 
 Here is an example showing both the strengths and weaknesses of how I
 degsigned the transformation filters. The representation of this file is
-in `reps/t1.txt`
+in `reps/2-t1.txt`
 
     +--------------+----------------+---------------+
     |              |                |               |
@@ -375,14 +375,16 @@ in `reps/t1.txt`
     |              |                |               |
     +--------------+----------------+---------------+
 
-          1                2                3              4                5
+           1               2                3               4                5
     +--------------+----------------+---------------+----------------+---------------+
     |              |                |               |                |               |
-    |              |                |       #       |                |       #       |
-    |              |       #        |       #       |       #        |       #       |
-    |     #        |      ###       |     #####     |       #        |       #       |
+    |              |                |               |                |       #       |
     |              |                |               |       #        |       #       |
-    |              |                |               |    #######     |   #########   |
+    |              |                |       #       |       #        |       #       |
+    |              |       #        |       #       |       #        |       #       |
+    |      #       |      ###       |     #####     |    #######     |   #########   |
+    |              |                |               |                |               |
+    |              |                |               |                |               |
     +--------------+----------------+---------------+----------------+---------------+
 
 In this visual representation each `#` is one subfigure. So the biggest
@@ -413,7 +415,7 @@ which will have the same y coordinate.
 To prove that my program otherwise works, I did run my program on a
 modified image (not pictured) where each figure in the grid is of one
 size bigger, that is each having 3 more subfigures than in the pictured
-problem.  I called this representation `reps/t2.txt`. This one gets
+problem.  I called this representation `reps/2-t2.txt`. This one gets
 solved as expected, here is the program output:
 
     --------------------------------------------------------
