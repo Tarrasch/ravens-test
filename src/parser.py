@@ -1,4 +1,4 @@
-from image.top import img_to_rep
+from image.top import fig_to_rep
 import os.path
 import cv2
 
@@ -30,10 +30,10 @@ def grid_paths(dir):
         array[y-1][x-1] = file_path
   return array
 
-def path_to_img(path):
+def path_to_fig(path):
   return cv2.imread(path, cv2.CV_LOAD_IMAGE_GRAYSCALE)
 
 
 def path_to_rep(path):
-  return img_to_rep(path_to_img(path))
+  return fig_to_rep(path_to_fig(path))
 
