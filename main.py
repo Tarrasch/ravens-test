@@ -10,10 +10,12 @@ method = solve              # Uncomment to just write the answer number
 
 def main():
   for x in range(1,9):
-    file_path = "reps/2-%s.txt" % x
+    file_path = "reps/%s" % x
     if os.path.exists(file_path):
       tree = parse(file_path)
-      ans = method(tree)
+      # ans = method(tree)
+      pprint(tree)
+      ans = 3
       print "--------------------------------------------------------"
       print "Solution to problem %s is:" % (x)
       pprint(ans)
