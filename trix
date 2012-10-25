@@ -1,0 +1,24 @@
+# <http://scipy-lectures.github.com/advanced/image_processing/index.html>
+import numpy
+import scipy
+import pylab as pl
+import pymorph
+from scipy import misc
+
+def s(fig): pl.imshow(fig); pl.gray(); pl.show()
+
+e = lambda fig: pymorph.erode(fig)
+d = lambda fig: pymorph.dilate(fig)
+o = lambda fig: pymorph.open(fig)
+c = lambda fig: pymorph.close(fig)
+a = lambda fun, n: reduce(lambda f1, f2: lambda x: f1(f2(x)), [fun]*n, lambda x: x)
+
+f = misc.imread('../images/Problem2-5.gif')
+f = misc.imread('../reps/2/2.png')
+f2 = f[:,:,0]
+b = 1-(f2 > 128)
+pymorph.label(b)
+nlabels = ls.max()
+(ls==1).sum()
+numpy.array([1,2,3]) > 2
+
