@@ -9,7 +9,7 @@ method = solve              # Uncomment to just write the answer number
 
 
 def main():
-  for x in range(1,9):
+  for x in range(1,2):
     file_path = "reps/%s" % x
     if os.path.exists(file_path):
       tree = parse(file_path)
