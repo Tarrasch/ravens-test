@@ -2,7 +2,8 @@ import cv2
 from itertools import *
 import numpy as np
 import pylab as pl
-def s(img): pl.imshow(img); pl.gray(); pl.show()
+from pprint import pprint
+def s(img): pl.imshow(img); pl.show()
 
 
 def region_prop(fig, subfig):
@@ -74,6 +75,14 @@ def region_prop(fig, subfig):
   Image = fig[y0:y1, x0:x1]
   NumPixels  = Image.sum()
   Fillity = (NumPixels+0.0)/FilledArea
+
+  # Test = FilledImage.astype('uint8')
+  # mf = cv2.moments(Test)
+  # CentroidFilled = ( mf['m10']/mf['m00'],mf['m01']/mf['m00'] )
+  # cv2.circle(Test, tuple(map(int,CentroidFilled)), 5,(50,0,255))
+  # s(Test)
+  # Test = np.zeros(fig.shape[0:2]).astype('uint8')
+  # cv2.drawContours( Test, [c], 0, color=255, thickness=-1 )
   ret = dict((k,v) for k, v in locals().iteritems() if k[0].isupper())
   return ret
 
