@@ -1,6 +1,8 @@
 import cv2
 from itertools import *
 import numpy as np
+import pylab as pl
+def s(img): pl.imshow(img); pl.gray(); pl.show()
 
 
 def region_prop(fig, subfig):
@@ -48,16 +50,16 @@ def region_prop(fig, subfig):
   cv2.drawContours( ConvexImage, [ConvexHull], -1,
                     color=255, thickness=-1 )
 
-# # ELLIPSE - determine best-fitting ellipse.
-#   centre,axes,angle = cv2.fitEllipse(c)
-#   MAJ = np.argmax(axes) # this is MAJor axis, 1 or 0
-#   MIN = 1-MAJ # 0 or 1, minor axis
-# # Note: axes length is 2*radius in that dimension
-#   MajorAxisLength = axes[MAJ]
-#   MinorAxisLength = axes[MIN]
-#   Eccentricity    = np.sqrt(1-(axes[MIN]/axes[MAJ])**2)
-#   Orientation     = angle
-#   EllipseCentre   = centre # x,y
+# ELLIPSE - determine best-fitting ellipse.
+  centre,axes,angle = cv2.fitEllipse(c)
+  MAJ = np.argmax(axes) # this is MAJor axis, 1 or 0
+  MIN = 1-MAJ # 0 or 1, minor axis
+# Note: axes length is 2*radius in that dimension
+  MajorAxisLength = axes[MAJ]
+  MinorAxisLength = axes[MIN]
+  Eccentricity    = np.sqrt(1-(axes[MIN]/axes[MAJ])**2)
+  Orientation     = angle
+  EllipseCentre   = centre # x,y
 
 # # ** if an image is supplied with the fig:
 # # Max/Min Intensity (only meaningful for a one-channel img..)
@@ -70,6 +72,8 @@ def region_prop(fig, subfig):
   x0, y0, dx, dy = BoundingBox
   x1, y1 = x0 + dx, y0 + dy
   Image = fig[y0:y1, x0:x1]
+  NumPixels  = Image.sum()
+  Fillity = (NumPixels+0.0)/FilledArea
   ret = dict((k,v) for k, v in locals().iteritems() if k[0].isupper())
   return ret
 

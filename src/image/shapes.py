@@ -2,13 +2,22 @@ from operator import itemgetter
 from pprint import pprint
 
 def add_shape(props):
-  pprint(map(itemgetter('Extent'), props))
+  # pprint(map(itemgetter('Extent'), props))
+  # pprint(zip(map(itemgetter('NumPixels'), props),
+  #   map(itemgetter('FilledArea'), props)))
+  # pprint(map(itemgetter('Fillity'), props))
+  # pprint(map(itemgetter('EquivDiameter'), props))
+  # pprint(map(itemgetter('Eccentricity'), props))
   # props = sorted(props) # Make deterministic!
   t = 1.0
   def are_alike(a, b):
     # Ok the proper solution would be some sort of k means clustering with a
     # very smart way to determine k
-    return abs(a['Extent'] - b['Extent']) < 0.15
+    return all(
+     [abs(a['Extent'] - b['Extent']) < 0.15,
+      abs(a['Eccentricity'] - b['Eccentricity']) < 0.05,
+      abs(a['Fillity'] - b['Fillity']) < 0.10,
+      True])
 
   candidate_shapes = []
   for i in range(len(props)):

@@ -52,5 +52,5 @@ def segment(img):
 
 def get_subfigures(fig):
   cs,_= cv2.findContours( fig.astype('uint8'), mode=cv2.RETR_EXTERNAL,
-                               method=cv2.CHAIN_APPROX_SIMPLE )
+                               method=cv2.CHAIN_APPROX_NONE )
   return cs
