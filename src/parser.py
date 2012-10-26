@@ -6,6 +6,9 @@ def parse(dir):
   """
   Given directory where representation images are
   """
+  # path_to_rep(alternative_paths(dir).next())
+  # path_to_rep(grid_paths(dir)[0][0])
+  # return {}
   grid = map(lambda xs: map(lambda x: path_to_rep(x), xs), grid_paths(dir))
   alts = map(lambda x: path_to_rep(x), alternative_paths(dir))
   d = dict([('grid', grid)] + [(str(i), alts[i-1]) for i in range(1,len(alts)+1)])
@@ -20,9 +23,7 @@ def alternative_paths(dir):
 def grid_paths(dir):
   fp = lambda y,x: "%s/grid/%s-%s.png" % (dir, y, x)
   n = 2 + os.path.exists(fp(3,2))
-  print n
   array = [["def"]*n]*(n-1) + [["def"]*(n-1)]
-  print array
   for y in range(1,4):
     for x in range(1,4):
       file_path = fp(y, x)

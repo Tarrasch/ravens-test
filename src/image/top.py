@@ -7,15 +7,21 @@ import pylab
 import pymorph
 from scipy import misc
 from pprint import pprint
+import operator
+from operator import itemgetter
 
 def s(img): pl.imshow(img); pl.gray(); pl.show()
 
 def fig_to_rep(img):
   img = segment(img)
   fig = img
+  s(fig)
   subfigures = get_subfigures(fig)
   rp = lambda subfig: region_prop(fig, subfigures, subfig)
   props = map(rp, subfigures)
+  bboxes = map(itemgetter('BoundingBox'), props)
+  s(props[0]['Image'])
+  return bboxes
   # minBoundBox = subfig
   # min([(1,2),(0,5)], key = lambda x: sum(x[0:2]))
 
@@ -23,7 +29,7 @@ def segment(img):
   return pymorph.close((255-img) > 128, Bc = pymorph.sebox(r=1))
 
 def get_subfigures(fig):
-  cs,_ = cv2.findContours( fig.astype('uint8'), mode=cv2.RETR_LIST,
+  cs,_= cv2.findContours( fig.astype('uint8'), mode=cv2.RETR_EXTERNAL,
                                method=cv2.CHAIN_APPROX_SIMPLE )
   return cs
 
@@ -74,16 +80,16 @@ def region_prop(fig, subfigures, subfig):
   cv2.drawContours( convexI, [ConvexHull], -1,
                     color=255, thickness=-1 )
 
-# ELLIPSE - determine best-fitting ellipse.
-  centre,axes,angle = cv2.fitEllipse(c)
-  MAJ = np.argmax(axes) # this is MAJor axis, 1 or 0
-  MIN = 1-MAJ # 0 or 1, minor axis
-# Note: axes length is 2*radius in that dimension
-  MajorAxisLength = axes[MAJ]
-  MinorAxisLength = axes[MIN]
-  Eccentricity    = np.sqrt(1-(axes[MIN]/axes[MAJ])**2)
-  Orientation     = angle
-  EllipseCentre   = centre # x,y
+# # ELLIPSE - determine best-fitting ellipse.
+#   centre,axes,angle = cv2.fitEllipse(c)
+#   MAJ = np.argmax(axes) # this is MAJor axis, 1 or 0
+#   MIN = 1-MAJ # 0 or 1, minor axis
+# # Note: axes length is 2*radius in that dimension
+#   MajorAxisLength = axes[MAJ]
+#   MinorAxisLength = axes[MIN]
+#   Eccentricity    = np.sqrt(1-(axes[MIN]/axes[MAJ])**2)
+#   Orientation     = angle
+#   EllipseCentre   = centre # x,y
 
 # # ** if an image is supplied with the fig:
 # # Max/Min Intensity (only meaningful for a one-channel img..)
@@ -94,7 +100,7 @@ def region_prop(fig, subfigures, subfig):
 # # pixel values
 #   PixelValues   = img[regionMask]
   x0, y0, dx, dy = BoundingBox
-  x1, y1 = x0 + dx, y0 + dx
+  x1, y1 = x0 + dx, y0 + dy
   Image = fig[y0:y1, x0:x1]
   ret = dict((k,v) for k, v in locals().iteritems() if k[0].isupper())
   return ret
