@@ -3,6 +3,7 @@ from itertools import *
 import numpy as np
 import pylab as pl
 from pprint import pprint
+import pymorph
 def s(img): pl.imshow(img); pl.show()
 
 
@@ -75,6 +76,13 @@ def region_prop(fig, subfig):
   Image = fig[y0:y1, x0:x1]
   NumPixels  = Image.sum()
   Fillity = (NumPixels+0.0)/FilledArea
+
+  # e = lambda fig: pymorph.erode(fig)
+  # d = lambda fig: pymorph.dilate(fig)
+  # o = lambda fig: pymorph.open(fig)
+  # c = lambda fig: pymorph.close(fig)
+  # a = lambda fun, n: reduce(lambda f1, f2: lambda x: f1(f2(x)), [fun]*n, lambda x: x)
+  # s((a(e, 3))(Image))
 
   # Test = FilledImage.astype('uint8')
   # mf = cv2.moments(Test)

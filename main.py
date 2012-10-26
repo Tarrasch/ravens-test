@@ -14,8 +14,8 @@ def main():
     file_path = "reps/%s" % x
     if os.path.exists(file_path):
       tree = parse(file_path)
-      ans = method(tree)
       pprint(tree)
+      ans = method(tree)
       # ans = 3
       print "--------------------------------------------------------"
       print "Solution to problem %s is:" % (x)

@@ -17,7 +17,7 @@ def add_shape(props):
     return all(
      [abs(a['Extent'] - b['Extent']) < 0.15,
       abs(a['Eccentricity'] - b['Eccentricity']) < 0.05,
-      abs(a['Fillity'] - b['Fillity']) < 0.10,
+      abs(a['Fillity'] - b['Fillity']) < 0.10, # TODO: remove l8r
       True])
 
   candidate_shapes = []
@@ -26,6 +26,7 @@ def add_shape(props):
     for sh_id in candidate_shapes + [i]:
       if(are_alike(props[sh_id], props[i])):
         props[i]['shape'] = "shape_" + str(sh_id)
+        props[i]['shape_id'] = sh_id
         if sh_id == i:
           candidate_shapes += [i]
         break

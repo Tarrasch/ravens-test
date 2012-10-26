@@ -12,6 +12,7 @@ import operator
 from prop import region_prop
 from position import annotate_positions
 from shapes import annotate_shapes, add_shape
+from rotation import annotate_rotations
 
 
 def s(img): pl.imshow(img); pl.gray(); pl.show()
@@ -19,6 +20,8 @@ def s(img): pl.imshow(img); pl.gray(); pl.show()
 def massage_props(props):
   # Oblivious of which subfigure belongs where!
   add_shape(props)
+  for p in props:
+    p['props'] = props # A neccesarry back door
   return props
 
 def fig_to_props(img):
@@ -33,7 +36,8 @@ def prop_to_rep(props):
   # Oblivious of how others figures look like!
   a_positions = annotate_positions(props)
   a_shapes = annotate_shapes(props)
-  annotations = [a_positions, a_shapes]
+  a_rotations = annotate_rotations(props)
+  annotations = [a_positions, a_shapes, a_rotations]
   return merge_annotations(annotations)
 
 def merge_annotations(annotations):
@@ -44,7 +48,9 @@ def merge_annotations(annotations):
   # return map(go, *f_annotations) if len(f_annotations) > 0 else [{}]*len(annotations[0])
   return map(go, *f_annotations)
 
-
+def annotate_filled(props):
+  # TODO: use
+  return map(lambda p: { 'shape': p['shape'] }, props)
 
 def segment(img):
   # return pymorph.close((255-img) > 128, Bc = pymorph.sebox(r=1))
