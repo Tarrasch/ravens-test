@@ -28,7 +28,7 @@ def annotate_rotation(p_subfig):
     ci[:cx,:cy]= cand
     ri = ri > 0.5
     ci = ci > 0.5
-    return (ri^ci).sum()
+    return (ri^ci).sum()*(1+q/10.0) # Favor low rotation
 
   return {'rot': min(range(4), key = rxor)*90 }
     # s(ri)

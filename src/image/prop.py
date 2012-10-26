@@ -4,6 +4,7 @@ import numpy as np
 import pylab as pl
 from pprint import pprint
 import pymorph
+import math
 def s(img): pl.imshow(img); pl.show()
 
 
@@ -63,6 +64,10 @@ def region_prop(fig, subfig):
   Orientation     = angle
   EllipseCentre   = centre # x,y
 
+  Test = FilledImage.astype('uint8')
+  mf = cv2.moments(Test)
+  CentroidFilled = ( mf['m10']/mf['m00'],mf['m01']/mf['m00'] )
+
 # # ** if an image is supplied with the fig:
 # # Max/Min Intensity (only meaningful for a one-channel img..)
 #   MaxIntensity  = np.max(img[regionMask])
@@ -76,6 +81,17 @@ def region_prop(fig, subfig):
   Image = fig[y0:y1, x0:x1]
   NumPixels  = Image.sum()
   Fillity = (NumPixels+0.0)/FilledArea
+  crx, cry = (CentroidFilled[0]-x0, CentroidFilled[1]-y0)
+  dxc = crx-(x1-x0)/2.0
+  dyc = cry-(y1-y0)/2.0
+  CentLength = math.sqrt(dxc*dxc + dyc*dyc)
+  # print(Centroid)
+  # print(CentroidFilled)
+  # print(((x1-x0)/2.0, (y1-y0)/2))
+  # print(CentLength)
+  # print("---")
+  # s(Image)
+  # s(FilledImage)
 
   # e = lambda fig: pymorph.erode(fig)
   # d = lambda fig: pymorph.dilate(fig)
@@ -84,13 +100,6 @@ def region_prop(fig, subfig):
   # a = lambda fun, n: reduce(lambda f1, f2: lambda x: f1(f2(x)), [fun]*n, lambda x: x)
   # s((a(e, 3))(Image))
 
-  # Test = FilledImage.astype('uint8')
-  # mf = cv2.moments(Test)
-  # CentroidFilled = ( mf['m10']/mf['m00'],mf['m01']/mf['m00'] )
-  # cv2.circle(Test, tuple(map(int,CentroidFilled)), 5,(50,0,255))
-  # s(Test)
-  # Test = np.zeros(fig.shape[0:2]).astype('uint8')
-  # cv2.drawContours( Test, [c], 0, color=255, thickness=-1 )
   ret = dict((k,v) for k, v in locals().iteritems() if k[0].isupper())
   return ret
 

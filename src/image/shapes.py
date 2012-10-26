@@ -1,5 +1,7 @@
 from operator import itemgetter
 from pprint import pprint
+import pylab as pl
+def s(fig): pl.imshow(fig); pl.gray(); pl.show()
 
 def add_shape(props):
   # pprint(map(itemgetter('Extent'), props))
@@ -14,10 +16,16 @@ def add_shape(props):
   def are_alike(a, b):
     # Ok the proper solution would be some sort of k means clustering with a
     # very smart way to determine k
-    return all(
-     [abs(a['Extent'] - b['Extent']) < 0.15,
-      abs(a['Eccentricity'] - b['Eccentricity']) < 0.05,
-      True])
+    d = lambda feat: abs(a[feat]-b[feat])
+    ma = lambda feat: max(a[feat], b[feat])
+    ratio = lambda feat: d(feat)/ma(feat)
+    return sum(
+     [d('Extent')*4,
+      d('Eccentricity')/2,
+      ratio('MajorAxisLength'),
+      ratio('MinorAxisLength'),
+      d('CentLength')/ma('MajorAxisLength')*5,
+      ]) < 0.8
 
   candidate_shapes = []
   for i in range(len(props)):
@@ -29,6 +37,21 @@ def add_shape(props):
         if sh_id == i:
           candidate_shapes += [i]
         break
+      else:
+        a = props[sh_id]
+        # b = props[i]
+        # d = lambda feat: abs(a[feat]-b[feat])
+        # ma = lambda feat: max(a[feat], b[feat])
+        # ratio = lambda feat: d(feat)/ma(feat)
+        # pprint( (
+        #  [d('Extent')*2,
+        #   d('Eccentricity')/2,
+        #   ratio('MajorAxisLength'),
+        #   ratio('MinorAxisLength'),
+        #   d('CentLength')/ma('MajorAxisLength')*5,
+        #   ]))
+        # s(a['Image'])
+        # s(b['Image'])
     assert('shape' in props[i])
 
 
