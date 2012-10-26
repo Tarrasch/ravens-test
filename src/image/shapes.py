@@ -8,7 +8,7 @@ def add_shape(props):
   # pprint(map(itemgetter('Fillity'), props))
   # pprint(map(itemgetter('EquivDiameter'), props))
   # pprint(map(itemgetter('Eccentricity'), props))
-  pprint(map(itemgetter('Orientation'), props))
+  # pprint(map(itemgetter('Orientation'), props))
   # props = sorted(props) # Make deterministic!
   t = 1.0
   def are_alike(a, b):
@@ -17,7 +17,6 @@ def add_shape(props):
     return all(
      [abs(a['Extent'] - b['Extent']) < 0.15,
       abs(a['Eccentricity'] - b['Eccentricity']) < 0.05,
-      abs(a['Fillity'] - b['Fillity']) < 0.10, # TODO: remove l8r
       True])
 
   candidate_shapes = []

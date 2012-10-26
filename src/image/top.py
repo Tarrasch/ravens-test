@@ -37,7 +37,8 @@ def prop_to_rep(props):
   a_positions = annotate_positions(props)
   a_shapes = annotate_shapes(props)
   a_rotations = annotate_rotations(props)
-  annotations = [a_positions, a_shapes, a_rotations]
+  a_filled = annotate_filled(props)
+  annotations = [a_positions, a_shapes, a_rotations, a_filled]
   return merge_annotations(annotations)
 
 def merge_annotations(annotations):
@@ -49,8 +50,7 @@ def merge_annotations(annotations):
   return map(go, *f_annotations)
 
 def annotate_filled(props):
-  # TODO: use
-  return map(lambda p: { 'shape': p['shape'] }, props)
+  return [{'filled': 'yes' if p['Fillity'] > 0.9 else 'no' } for p in props]
 
 def segment(img):
   # return pymorph.close((255-img) > 128, Bc = pymorph.sebox(r=1))
