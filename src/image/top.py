@@ -43,8 +43,10 @@ def prop_to_rep(props):
   return merge_annotators(props, annotators)
 
 def merge_annotators(props, annotators):
-  # f_annotators = filter(lambda x: len(list(groupby((x)))) > 1, annotators)
-  f_annotators = annotators
+  all_props = props[0]['props']
+  hash_dict = lambda d: tuple(sorted(d.iteritems()))
+  f_annotators = filter(lambda f: len(set(map(hash_dict, f(all_props)))) > 1, annotators)
+  # for f in annotators: print (set(map(hash_dict, f(all_props))))
   def go(*anns):
     return dict([(k, v) for k, v in sum(map(lambda d: list(d.iteritems()), anns), [])])
   return map(go, *map(lambda f: f(props), f_annotators))
