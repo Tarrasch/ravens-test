@@ -1,4 +1,4 @@
-from image.top import fig_to_rep
+from image.top import fig_to_props, massage_props, prop_to_rep
 import os.path
 import cv2
 
@@ -9,8 +9,12 @@ def parse(dir):
   # path_to_rep(alternative_paths(dir).next())
   # path_to_rep(grid_paths(dir)[0][0])
   # return {}
-  grid = map(lambda xs: map(lambda x: path_to_rep(x), xs), grid_paths(dir))
-  alts = map(lambda x: path_to_rep(x), alternative_paths(dir))
+  grid = map(lambda xs: map(lambda x: path_to_props(x), xs), grid_paths(dir))
+  alts = map(lambda x: path_to_props(x), alternative_paths(dir))
+  props = sum(sum(grid, []) + alts, [])
+  massage_props(props) # Like add shape annotations etc
+  grid = map(lambda xs: map(lambda x: prop_to_rep(x), xs), grid)
+  alts = map(lambda x: prop_to_rep(x), alts)
   d = dict([('grid', grid)] + [(str(i), alts[i-1]) for i in range(1,len(alts)+1)])
   return d
 
@@ -30,6 +34,6 @@ def path_to_fig(path):
   return cv2.imread(path, cv2.CV_LOAD_IMAGE_GRAYSCALE)
 
 
-def path_to_rep(path):
-  return fig_to_rep(path_to_fig(path))
+def path_to_props(path):
+  return fig_to_props(path_to_fig(path))
 
