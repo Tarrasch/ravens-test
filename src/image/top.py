@@ -1,4 +1,5 @@
 import cv2
+from itertools import *
 import numpy
 import numpy as np
 import scipy
@@ -15,15 +16,12 @@ def s(img): pl.imshow(img); pl.gray(); pl.show()
 def fig_to_rep(img):
   img = segment(img)
   fig = img
-  s(fig)
+  # s(fig)
   subfigures = get_subfigures(fig)
   rp = lambda subfig: region_prop(fig, subfig)
   props = map(rp, subfigures)
-  bboxes = map(itemgetter('BoundingBox'), props)
-  # s(props[0]['Image'])
-  return bboxes
-  # minBoundBox = subfig
-  # min([(1,2),(0,5)], key = lambda x: sum(x[0:2]))
+  a_positions = annotate_positions(props)
+  return a_positions
 
 def segment(img):
   return pymorph.close((255-img) > 128, Bc = pymorph.sebox(r=1))
@@ -33,6 +31,16 @@ def get_subfigures(fig):
                                method=cv2.CHAIN_APPROX_SIMPLE )
   return cs
 
+def annotate_positions(props):
+  bboxes = map(itemgetter('BoundingBox'), props)
+  ul_most = min(bboxes, key = lambda x: sum(x[0:2]))
+  ap = lambda p_subfig: annotate_position(ul_most, p_subfig)
+  return map(ap, props)
+
+def annotate_position(ul_most, p_subfig):
+  origo_x, origo_y, dx, dy = ul_most
+  x, y, _1, _2 = p_subfig['BoundingBox']
+  return { 'x': (x-origo_x)/dx, 'y': (y-origo_y)/dy }
 
 def region_prop(fig, subfig):
   # Inspired by:
@@ -101,6 +109,5 @@ def region_prop(fig, subfig):
   x0, y0, dx, dy = BoundingBox
   x1, y1 = x0 + dx, y0 + dy
   Image = fig[y0:y1, x0:x1]
-  s(FilledImage)
   ret = dict((k,v) for k, v in locals().iteritems() if k[0].isupper())
   return ret

@@ -4,18 +4,18 @@ from src.solve import *
 from src.parser import parse
 
 method = solve              # Uncomment to just write the answer number
-# method = solve_verbose      # Uncomment to motivate it's answer
-# method = solve_very_verbose # Uncomment to compare motivations between choices
+method = solve_verbose      # Uncomment to motivate it's answer
+method = solve_very_verbose # Uncomment to compare motivations between choices
 
 
 def main():
-  for x in range(2,3):
+  for x in range(6,7):
     file_path = "reps/%s" % x
     if os.path.exists(file_path):
       tree = parse(file_path)
-      # ans = method(tree)
+      ans = method(tree)
       pprint(tree)
-      ans = 3
+      # ans = 3
       print "--------------------------------------------------------"
       print "Solution to problem %s is:" % (x)
       pprint(ans)
