@@ -1,6 +1,7 @@
 from image.top import fig_to_props, massage_props, prop_to_rep
 import os.path
 import cv2
+from operator import itemgetter
 
 def parse(dir):
   """
@@ -15,8 +16,17 @@ def parse(dir):
   massage_props(props) # Like add shape annotations etc
   grid = map(lambda xs: map(lambda x: prop_to_rep(x), xs), grid)
   alts = map(lambda x: prop_to_rep(x), alts)
+  dicts = sum(sum(grid, []) + alts, [])
+  clean_properties(dicts)
   d = dict([('grid', grid)] + [(str(i), alts[i-1]) for i in range(1,len(alts)+1)])
   return d
+
+def clean_properties(dicts):
+  # Just for efficiency and easier debugging
+  for k in dicts[0].keys():
+    if len(set(map(itemgetter(k), dicts))) <= 1:
+      for d in dicts:
+        del d[k]
 
 def alternative_paths(dir):
   for a in range(1,100):
