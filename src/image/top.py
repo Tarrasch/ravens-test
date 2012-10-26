@@ -24,7 +24,8 @@ def fig_to_rep(img):
   return a_positions
 
 def segment(img):
-  return pymorph.close((255-img) > 128, Bc = pymorph.sebox(r=1))
+  # return pymorph.close((255-img) > 128, Bc = pymorph.sebox(r=1))
+  return (255-img) > 128
 
 def get_subfigures(fig):
   cs,_= cv2.findContours( fig.astype('uint8'), mode=cv2.RETR_EXTERNAL,
