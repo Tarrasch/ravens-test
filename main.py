@@ -10,8 +10,8 @@ method = solve_very_verbose # Uncomment to compare motivations between choices
 
 def main():
   # for x in range(6,7):
-  for x in [1,2,3,4,5,6]:
-  # for x in [6]:
+  # for x in [1,2,3,4,5,6]:
+  for x in [5]:
     file_path = "reps/%s" % x
     if os.path.exists(file_path):
       tree = parse(file_path)

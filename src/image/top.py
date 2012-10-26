@@ -30,6 +30,11 @@ def fig_to_props(img):
   subfigures = get_subfigures(fig)
   rp = lambda subfig: region_prop(fig, subfig)
   props = map(rp, subfigures)
+  for prop in props:
+    if 'Inner' in prop:
+      print "Oh, has inner!!!"
+      s(prop['Inner'])
+      props += fig_to_props(prop['Inner'])
   return props
 
 def prop_to_rep(props):
