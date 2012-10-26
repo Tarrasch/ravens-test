@@ -41,7 +41,9 @@ def annotate_positions(props):
 def annotate_position(ul_most, p_subfig):
   origo_x, origo_y, dx, dy = ul_most
   x, y, _1, _2 = p_subfig['BoundingBox']
-  return { 'x': (x-origo_x)/dx, 'y': (y-origo_y)/dy }
+  ir = lambda x: int(round(x))
+  return { 'x': ir((x-origo_x)/dx),
+           'y': ir((y-origo_y)/dy) }
 
 def region_prop(fig, subfig):
   # Inspired by:
