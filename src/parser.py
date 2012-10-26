@@ -24,12 +24,7 @@ def grid_paths(dir):
   fp = lambda y,x: "%s/grid/%s-%s.png" % (dir, y, x)
   n = 2 + os.path.exists(fp(3,2))
   array = [["def"]*n]*(n-1) + [["def"]*(n-1)]
-  for y in range(1,4):
-    for x in range(1,4):
-      file_path = fp(y, x)
-      if os.path.exists(file_path):
-        array[y-1][x-1] = file_path
-  return array
+  return [[fp(y+1,x+1) for x in range(n) if y < n-1 or x < n-1] for y in range(n)]
 
 def path_to_fig(path):
   return cv2.imread(path, cv2.CV_LOAD_IMAGE_GRAYSCALE)
