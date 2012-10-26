@@ -18,7 +18,7 @@ def solve_very_verbose_(tree):
   filterss = get_filterss(grid) # Only to memoize it
   alternatives = tree.keys()
   alternatives.remove("grid")
-  for alternative in alternatives:
+  for alternative in sorted(alternatives):
     alt_image = tree[alternative]
     def judge_directions(directions):
       dir_filterss = map(lambda dir: filterss[dir], directions)
