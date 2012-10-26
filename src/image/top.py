@@ -34,20 +34,20 @@ def fig_to_props(img):
 
 def prop_to_rep(props):
   # Oblivious of how others figures look like!
-  a_positions = annotate_positions(props)
-  a_shapes = annotate_shapes(props)
-  a_rotations = annotate_rotations(props)
-  a_filled = annotate_filled(props)
-  annotations = [a_positions, a_shapes, a_rotations, a_filled]
-  return merge_annotations(annotations)
+  annotators = [
+    annotate_positions,
+    annotate_shapes,
+    annotate_rotations,
+    annotate_filled,
+    ]
+  return merge_annotators(props, annotators)
 
-def merge_annotations(annotations):
-  # f_annotations = filter(lambda x: len(list(groupby((x)))) > 1, annotations)
-  f_annotations = annotations
+def merge_annotators(props, annotators):
+  # f_annotators = filter(lambda x: len(list(groupby((x)))) > 1, annotators)
+  f_annotators = annotators
   def go(*anns):
     return dict([(k, v) for k, v in sum(map(lambda d: list(d.iteritems()), anns), [])])
-  # return map(go, *f_annotations) if len(f_annotations) > 0 else [{}]*len(annotations[0])
-  return map(go, *f_annotations)
+  return map(go, *map(lambda f: f(props), f_annotators))
 
 def annotate_filled(props):
   return [{'filled': 'yes' if p['Fillity'] > 0.9 else 'no' } for p in props]
