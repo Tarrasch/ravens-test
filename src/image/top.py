@@ -17,10 +17,10 @@ def fig_to_rep(img):
   fig = img
   s(fig)
   subfigures = get_subfigures(fig)
-  rp = lambda subfig: region_prop(fig, subfigures, subfig)
+  rp = lambda subfig: region_prop(fig, subfig)
   props = map(rp, subfigures)
   bboxes = map(itemgetter('BoundingBox'), props)
-  s(props[0]['Image'])
+  # s(props[0]['Image'])
   return bboxes
   # minBoundBox = subfig
   # min([(1,2),(0,5)], key = lambda x: sum(x[0:2]))
@@ -34,16 +34,15 @@ def get_subfigures(fig):
   return cs
 
 
-def region_prop(fig, subfigures, subfig):
+def region_prop(fig, subfig):
   # Inspired by:
   # http://stackoverflow.com/a/9059648/621449
-  cs = subfigures
   c = subfig
 
 # set up the 'FilledImage' bit of regionprops.
-  filledI = np.zeros(fig.shape[0:2]).astype('uint8')
+  FilledImage = np.zeros(fig.shape[0:2]).astype('uint8')
 # set up the 'ConvexImage' bit of regionprops.
-  convexI = np.zeros(fig.shape[0:2]).astype('uint8')
+  ConvexImage = np.zeros(fig.shape[0:2]).astype('uint8')
 # calculate some things useful later:
   m = cv2.moments(c)
 
@@ -61,9 +60,9 @@ def region_prop(fig, subfigures, subfig):
   Extent        = Area/(BoundingBox[2]*BoundingBox[3])
 
 # FilledImage: draw the region on in white
-  # cv2.drawContours( filledI, cs, i, color=255, thickness=-1 )
+  cv2.drawContours( FilledImage, [c], 0, color=255, thickness=-1 )
 # calculate indices of that region..
-  regionMask    = (filledI==255)
+  regionMask    = (FilledImage==255)
 # FilledArea: number of pixels filled in FilledImage
   FilledArea    = np.sum(regionMask)
 # PixelIdxList : indices of region.
@@ -76,8 +75,8 @@ def region_prop(fig, subfigures, subfig):
   ConvexArea    = cv2.contourArea(ConvexHull)
 # Solidity := Area/ConvexArea
   Solidity      = Area/ConvexArea
-# convexImage -- draw on convexI
-  cv2.drawContours( convexI, [ConvexHull], -1,
+# convexImage -- draw on ConvexImage
+  cv2.drawContours( ConvexImage, [ConvexHull], -1,
                     color=255, thickness=-1 )
 
 # # ELLIPSE - determine best-fitting ellipse.
@@ -102,5 +101,6 @@ def region_prop(fig, subfigures, subfig):
   x0, y0, dx, dy = BoundingBox
   x1, y1 = x0 + dx, y0 + dy
   Image = fig[y0:y1, x0:x1]
+  s(FilledImage)
   ret = dict((k,v) for k, v in locals().iteritems() if k[0].isupper())
   return ret
