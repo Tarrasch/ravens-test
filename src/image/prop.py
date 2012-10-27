@@ -94,21 +94,26 @@ def region_prop(fig, subfig):
   # s(Image)
   # s(FilledImage)
 
+  e = lambda fig: pymorph.erode(fig)
+  d = lambda fig: pymorph.dilate(fig)
+  o = lambda fig: pymorph.open(fig)
+  c = lambda fig: pymorph.close(fig)
+  a = lambda fun, n: reduce(lambda f1, f2: lambda x: f1(f2(x)), [fun]*n, lambda x: x)
   Thin = pymorph.thin(OImage)
   # s(Thin)
   # s(Thin)
   if num_holes(Image) >= 2:
+    # s(Thin)
     Inner = removeOuter(Thin)
     # s(Inner)
+    Inner = (a(d,7))(Inner>0)
+    # s(Inner)
+    Outer = OImage > Inner
+    # s(Outer)
   # Thick = pymorph.thick(Image)
   # s(Thick)
 
 
-  # e = lambda fig: pymorph.erode(fig)
-  # d = lambda fig: pymorph.dilate(fig)
-  # o = lambda fig: pymorph.open(fig)
-  # c = lambda fig: pymorph.close(fig)
-  # a = lambda fun, n: reduce(lambda f1, f2: lambda x: f1(f2(x)), [fun]*n, lambda x: x)
   # s((a(e, 3))(Image))
 
   ret = dict((k,v) for k, v in locals().iteritems() if k[0].isupper())
@@ -132,6 +137,13 @@ def removeOuter(fig):
         continue
       if fig[y0][x0] == False:
         q.append((y,x))
+      else:
+        for y2, x2 in [(y+ddy,x+ddx) for ddy,ddx in product(range(-4,5),range(-4,5))]:
+          if x2 < 0 or y2 < 0 or y2 >= fig.shape[0] or x2 >= fig.shape[1]:
+            continue
+          res[y2][x2] = False
+
+
   return res
 
 def num_holes(fig):

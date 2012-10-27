@@ -1,4 +1,4 @@
-from image.top import fig_to_props, massage_props, prop_to_rep
+from image.top import fig_to_props, massage_props, prop_to_rep, segment
 import os.path
 import cv2
 from operator import itemgetter
@@ -41,7 +41,7 @@ def grid_paths(dir):
   return [[fp(y+1,x+1) for x in range(n) if y < n-1 or x < n-1] for y in range(n)]
 
 def path_to_fig(path):
-  return cv2.imread(path, cv2.CV_LOAD_IMAGE_GRAYSCALE)
+  return segment(cv2.imread(path, cv2.CV_LOAD_IMAGE_GRAYSCALE))
 
 
 def path_to_props(path):

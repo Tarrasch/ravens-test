@@ -24,18 +24,20 @@ def massage_props(props):
     p['props'] = props # A neccesarry back door
   return props
 
-def fig_to_props(img):
-  fig = segment(img)
+def fig_to_props(fig):
   # s(fig)
   subfigures = get_subfigures(fig)
   rp = lambda subfig: region_prop(fig, subfig)
   props = map(rp, subfigures)
+  new_props = []
   for prop in props:
     if 'Inner' in prop:
-      print "Oh, has inner!!!"
-      s(prop['Inner'])
-      props += fig_to_props(prop['Inner'])
-  return props
+      new_props += fig_to_props(prop['Outer'])
+      new_props += fig_to_props(prop['Inner'])
+    else:
+      new_props += [prop]
+
+  return new_props
 
 def prop_to_rep(props):
   # Oblivious of how others figures look like!
