@@ -49,10 +49,10 @@ second problem:
 We notice two interesting things.
 
   1. The program naturally don't have any way to give mnemonic names to
-     the shape. It doesn't need to, because it only needs to when shapes
-     are different.
-  2. It has filtered out irrelevant properties.  For instance 'rotation'
-     isn't relevant to the second problem.
+     the shape. It doesn't need to, because it only needs to know when
+     if they are different.
+  2. It has filtered out irrelevant properties.  For instance
+     `'rotation'` isn't relevant to the second problem.
 
 ## Solution Overview
 
@@ -92,15 +92,35 @@ second project.
 
 ### Extracting shape
 
+First we say that two shapes are the same even if they are rotations of
+each other. We partition all subfigures into sets like this:
+
+  1. Look at rotation invariant *features* of a subfigure. These are all
+     real values so we can convert each subfigure to a point in a space
+     with as many dimensions as we have features.
+  2. Consider two subfigures being of the same shape if their points put
+     in an euclidean space are not farther apart than a threshold value
+     *t*.
+
+While (1) is quite an established trick, (2) is a naive way to seperate
+partition them, ideally one would have something like k means
+clustering. But that's way too complicated. Unfortunately, using this
+naive method in (2) made me configure the parameters (threshold and
+coefficients) until the program distinguished the shapes in problem 1 to
+6. This causes extreme overfitting which is really bad.
+
+Also, we let the *shape represant* denote the first inhabitant of the
+set for a given shape.
+
 ### Extracting rotation, filledness and position
 
 Rotation, filledness and position are comparably simple.
 
-After identifying a the shape of an object, *rotation* is found by
-taking the symmetric difference of the shapes representant and the
-actual current subfigure's pixelset. If the symmetric difference is small
-for a given rotation of the current subfigure, then that will be the
-rotation for that subfigure.
+After identifying the shape of an subfigure, *rotation* is found by
+taking the symmetric difference of the shapes representant's pixelset
+and the current subfigure's pixelset. If the symmetric difference is
+small for a given rotation of the current subfigure, then that will be
+the rotation for that subfigure.
 
 I consider a figure *filled* if the ratio of 'Area' and 'FilledArea' is
 greater than `0.9`.
@@ -111,12 +131,76 @@ image is in both dimensions.
 
 ### Extracting nested subfigures
 
+Get the composed subfigure: [fig1]
+
+![orig](img/orig.png)
+
+calculate it's thin (morphological term): [fig2]
+
+![thin](img/thin.png)
+
+bfs-kill away the perimeter: [fig3]
+
+![bfs-kill](img/bfs-kill.png)
+
+dilate back a couple of steps to get the inner subfigure: [fig4]
+
+![dilated](img/dilated.png)
+
+also create outer subfigure by set difference: [fig5]
+
+![outer](img/outer.png)
+
 ## Changes made to `solve()` since the last project
 
-
+Not much was changed. The major modification is that it treats the
+rotation property specially in the sense that it understands that `360`
+and `-360` degrees is the same as `0` degrees.
 
 ## Discussing the quality of created representations
 
-### Discussing solution qualities since project 2
+The visually infered representations for the problems 1 to 6 are very
+similar to the one I manually created. Of course there are no mnenomic
+names for the shapes anymore but the representations are still
+equivelent from `solve()`'s perspective. It turns out that the only
+difference between the representations are that my program considers the
+thick lines to be filled, which they really are but a human doesn't
+think that way because the are just lines. It turned out that those
+extra properties only helped `solve()` because the pattern between the
+lines are now stronger since they have even more properties in common.
 
+### About problem 7
 
+It's very expected that my program understands the grid pattern. However
+as of the overfiting issues with the shape recognition I was happy to
+see that is considered big trinagles as different figures as small
+triangles. While most features my program looks at are size invariant,
+the features 'MajorAxisLength' and 'MinorAxisLength' are not, hence is
+sees big and small triangles as different shapes and succesfully solves
+the problem for the right reason.
+
+### About problem 8
+
+My program doesn't solve this for two reasons.
+
+  1. The grid pattern is diffused since the frame will be the
+     upperleftmost subfigure.
+  2. There are three patterns here.
+    1. Increase rows/cols of triangles
+    2. Change frame 2 to 3 (right direction only)
+    3. Change frame 1 to 2 (right direction only)
+
+There is no grid in the representation because of (1) and my program is
+hardcoded to only look for patterns in 2 steps, but it's clear from (2)
+that that is not enough. If one also searches for patterns in 3 steps,
+the program will run for hours or days.
+
+## Ablation experiments
+
+Ablation experiments could be done by removing the ability to infer the
+four different kinds of properties, *shape, rotation, position* and
+*filledness*. But this would turn out to give out the exact same results
+from my ablation experiments from the last project. The only difference
+now is that the visual inferences have dependencies To infer rotation,
+shape need to be infered first, so you can't ablate out only shape
+without also taking out rotation.
