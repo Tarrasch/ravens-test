@@ -10,28 +10,28 @@ contains 1-3 *subfigures*, like a circle or a rectangle.
 
 I also use terminology like `Area`, `FilledArea` and `Eccentricity`.
 These are features of an image region. See [this
-page][http://www.mathworks.se/help/images/ref/regionprops.html] for details.
+page](http://www.mathworks.se/help/images/ref/regionprops.html) for
+details.
 
 ## Running the program
 
       $ python ArashRouhani_Project_3.py
 
-Works for me. It takes a few minutes on my machine. My program depends on
-*opencv* for most of it's image processing but also *pymorph* for the image
-processing parts involving morphological operations. Meanwhile opencv
-has to be installed on the graders machine (I know a lot of my class
-mates used it), pymorph is attached in the zip file and should just
-work.
+Works for me. It takes a few minutes on my machine. My program uses
+*opencv* for most of its image processing but also *pymorph* for the
+parts involving morphological operations. Meanwhile opencv has to be
+installed on the graders machine (I know a lot of my class mates used it
+too), pymorph is attached in the zip file and should just work.
 
 ### Experimenting with the programs verbosity
 
 Just like for my second project you can experiment with my programs
 verbosity by uncommenting a few lines in the file
 `ArashRouhani_Project_3.py`. There is one line that will make my program
-output the intermediete representation, experimenting with that should
+output the intermediate representation, experimenting with that should
 make it somewhat easier to understand how my program thinks.
 
-For instance, this is the outputted intermediete representation for the
+For instance, this is the outputted intermediate representation for the
 second problem:
 
     {'1': [{'shape': 'shape_3', 'x': 0, 'y': 1},
@@ -57,12 +57,13 @@ We notice two interesting things.
 ## Solution Overview
 
 In project 2, a figure was a list of subfigures and each subfigure contained
-*properties* with *values*. In pseudocode:
+*properties* with *values*. In pseudo code:
 
     rep = read_rep('rep.yaml')
     answer = solve(rep)
 
-My approach to project 3 is to create `rep` from the images. In pseudocode:
+My approach to project 3 is to create `rep` from the images. In pseudo
+code:
 
     vis_rep = read_vis_rep('rep.png')
     rep = vis_rep_to_rep(vis_rep)
@@ -70,8 +71,8 @@ My approach to project 3 is to create `rep` from the images. In pseudocode:
 
 In fact, I did almost no changes at all to the `solve()` function! That
 is amazing, because it means that my representations for the second
-project where described at a low level. Furthermore, the intermediete
-representation extracted from the images are equivelent to my hand
+project where described at a low level. Furthermore, the intermediate
+representation extracted from the images are equivalent to my hand
 written ones for project 2.  Naturally, this was my intention and not a
 coincidence, but this too verifies that my second project worked at a
 quite low level already.
@@ -79,7 +80,7 @@ quite low level already.
 ## How I implement `vis_rep_to_rep()`
 
 As I see it, what is worth discussing about my third project is how I
-can extract the following attributes from the visual images.
+extract the following attributes from the visual images.
 
   * Shape
   * Rotation
@@ -102,14 +103,14 @@ each other. We partition all subfigures into sets like this:
      in an euclidean space are not farther apart than a threshold value
      *t*.
 
-While (1) is quite an established trick, (2) is a naive way to seperate
-partition them, ideally one would have something like k means
-clustering. But that's way too complicated. Unfortunately, using this
-naive method in (2) made me configure the parameters (threshold and
-coefficients) until the program distinguished the shapes in problem 1 to
-6. This causes extreme overfitting which is really bad.
+While (1) is quite an established trick, (2) is a naive way of
+partitioning, ideally one would use something like K means clustering.
+But that's too complicated. Unfortunately, using this naive method in
+(2) made me configure the parameters (threshold and coefficients) by
+hand until the program distinguished the shapes in problem 1 to
+6. This causes extreme over fitting which is really bad.
 
-Also, we let the *shape represant* denote the first inhabitant of the
+Also, we let the *shape representative* denote the first inhabitant of the
 set for a given shape.
 
 ### Extracting rotation, filledness and position
@@ -117,8 +118,8 @@ set for a given shape.
 Rotation, filledness and position are comparably simple.
 
 After identifying the shape of an subfigure, *rotation* is found by
-taking the symmetric difference of the shapes representant's pixelset
-and the current subfigure's pixelset. If the symmetric difference is
+taking the symmetric difference of the shapes representative's pixel set
+and the current subfigure's pixel set. If the symmetric difference is
 small for a given rotation of the current subfigure, then that will be
 the rotation for that subfigure.
 
@@ -126,7 +127,7 @@ I consider a figure *filled* if the ratio of 'Area' and 'FilledArea' is
 greater than `0.9`.
 
 The *position* is inferred by considering one of the subfigures as the
-upperleftmostest one and then I compare how much translated the current
+upper leftmost one and then I compare how much translated the current
 image is in both dimensions.
 
 ### Extracting nested subfigures
@@ -159,10 +160,10 @@ and `-360` degrees is the same as `0` degrees.
 
 ## Discussing the quality of created representations
 
-The visually infered representations for the problems 1 to 6 are very
-similar to the one I manually created. Of course there are no mnenomic
+The visually inferred representations for the problems 1 to 6 are very
+similar to the one I manually created. Of course there are no mnemonic
 names for the shapes anymore but the representations are still
-equivelent from `solve()`'s perspective. It turns out that the only
+equivalent from `solve()`'s perspective. It turns out that the only
 difference between the representations are that my program considers the
 thick lines to be filled, which they really are but a human doesn't
 think that way because the are just lines. It turned out that those
@@ -172,11 +173,11 @@ lines are now stronger since they have even more properties in common.
 ### About problem 7
 
 It's very expected that my program understands the grid pattern. However
-as of the overfiting issues with the shape recognition I was happy to
-see that is considered big trinagles as different figures as small
+as of the over fitting issues with the shape recognition I was happy to
+see that is considered big triangles as different figures as small
 triangles. While most features my program looks at are size invariant,
 the features 'MajorAxisLength' and 'MinorAxisLength' are not, hence is
-sees big and small triangles as different shapes and succesfully solves
+sees big and small triangles as different shapes and successfully solves
 the problem for the right reason.
 
 ### About problem 8
@@ -191,7 +192,7 @@ My program doesn't solve this for two reasons.
     3. Change frame 1 to 2 (right direction only)
 
 There is no grid in the representation because of (1) and my program is
-hardcoded to only look for patterns in 2 steps, but it's clear from (2)
+hard coded to only look for patterns in 2 steps, but it's clear from (2)
 that that is not enough. If one also searches for patterns in 3 steps,
 the program will run for hours or days.
 
@@ -199,8 +200,8 @@ the program will run for hours or days.
 
 Ablation experiments could be done by removing the ability to infer the
 four different kinds of properties, *shape, rotation, position* and
-*filledness*. But this would turn out to give out the exact same results
-from my ablation experiments from the last project. The only difference
-now is that the visual inferences have dependencies To infer rotation,
-shape need to be infered first, so you can't ablate out only shape
-without also taking out rotation.
+*filledness*. It will give the same results as my ablation experiments
+from the last project. The only difference now is that the visual
+inferences have dependencies To infer rotation, shape need to be inferred
+first, so you can't ablate out only shape without also taking out
+rotation.
