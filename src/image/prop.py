@@ -99,17 +99,19 @@ def region_prop(fig, subfig):
   o = lambda fig: pymorph.open(fig)
   c = lambda fig: pymorph.close(fig)
   a = lambda fun, n: reduce(lambda f1, f2: lambda x: f1(f2(x)), [fun]*n, lambda x: x)
+
+  s(OImage)
   Thin = pymorph.thin(OImage)
-  # s(Thin)
+  s(Thin)
   # s(Thin)
   if num_holes(Image) >= 2:
     # s(Thin)
     Inner = removeOuter(Thin)
-    # s(Inner)
+    s(Inner)
     Inner = (a(d,7))(Inner>0)
-    # s(Inner)
+    s(Inner)
     Outer = OImage > Inner
-    # s(Outer)
+    s(Outer)
   # Thick = pymorph.thick(Image)
   # s(Thick)
 

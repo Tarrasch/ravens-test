@@ -96,8 +96,8 @@ second project.
 First we say that two shapes are the same even if they are rotations of
 each other. We partition all subfigures into sets like this:
 
-  1. Look at rotation invariant *features* of a subfigure. These are all
-     real values so we can convert each subfigure to a point in a space
+  1. Look at rotation invariant features of a subfigure. These are all
+     real values so we can project each subfigure to a point in a space
      with as many dimensions as we have features.
   2. Consider two subfigures being of the same shape if their points put
      in an euclidean space are not farther apart than a threshold value
@@ -136,19 +136,19 @@ Get the composed subfigure: [fig1]
 
 ![orig](img/orig.png)
 
-calculate it's thin (morphological term): [fig2]
+Calculate its *thin* (morphological term): [fig2]
 
 ![thin](img/thin.png)
 
-bfs-kill away the perimeter: [fig3]
+Bfs and erase the perimeter: [fig3]
 
 ![bfs-kill](img/bfs-kill.png)
 
-dilate back a couple of steps to get the inner subfigure: [fig4]
+Dilate back a couple of steps to get the inner subfigure: [fig4]
 
 ![dilated](img/dilated.png)
 
-also create outer subfigure by set difference: [fig5]
+Create outer subfigure by set difference: [fig5]
 
 ![outer](img/outer.png)
 
@@ -172,13 +172,12 @@ lines are now stronger since they have even more properties in common.
 
 ### About problem 7
 
-It's very expected that my program understands the grid pattern. However
-as of the over fitting issues with the shape recognition I was happy to
-see that is considered big triangles as different figures as small
-triangles. While most features my program looks at are size invariant,
-the features 'MajorAxisLength' and 'MinorAxisLength' are not, hence is
-sees big and small triangles as different shapes and successfully solves
-the problem for the right reason.
+As expected my program understands the grid pattern. However as of the
+over fitting issues with the shape recognition I was relieved to see that
+it considers big triangles as different figures as small triangles.
+While most features my program looks at are size invariant, the features
+`MajorAxisLength` and `MinorAxisLength` are not, hence is sees big and
+small triangles as different shapes and successfully solves the problem.
 
 ### About problem 8
 
@@ -195,6 +194,12 @@ There is no grid in the representation because of (1) and my program is
 hard coded to only look for patterns in 2 steps, but it's clear from (2)
 that that is not enough. If one also searches for patterns in 3 steps,
 the program will run for hours or days.
+
+## Solution to 1 and 3
+
+Just like the last time, my program thinks about the first and third
+problem in terms of rotations. That's why the given answer give might
+differ from the solution when you think in terms of reflections.
 
 ## Ablation experiments
 
