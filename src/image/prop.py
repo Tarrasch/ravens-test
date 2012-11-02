@@ -79,6 +79,7 @@ def region_prop(fig, subfig):
   x0, y0, dx, dy = BoundingBox
   x1, y1 = x0 + dx, y0 + dy
   Image = fig[y0:y1, x0:x1]
+  FilledImageFit = FilledImage[y0:y1, x0:x1]
   OImage = fig[y0-1:y1+1, x0-1:x1+1]
   NumPixels  = Image.sum()
   Fillity = (NumPixels+0.0)/FilledArea
@@ -86,13 +87,6 @@ def region_prop(fig, subfig):
   dxc = crx-(x1-x0)/2.0
   dyc = cry-(y1-y0)/2.0
   CentLength = math.sqrt(dxc*dxc + dyc*dyc)
-  # print(Centroid)
-  # print(CentroidFilled)
-  # print(((x1-x0)/2.0, (y1-y0)/2))
-  # print(CentLength)
-  # print("---")
-  # s(Image)
-  # s(FilledImage)
 
   e = lambda fig: pymorph.erode(fig)
   d = lambda fig: pymorph.dilate(fig)
@@ -100,23 +94,11 @@ def region_prop(fig, subfig):
   c = lambda fig: pymorph.close(fig)
   a = lambda fun, n: reduce(lambda f1, f2: lambda x: f1(f2(x)), [fun]*n, lambda x: x)
 
-  s(OImage)
   Thin = pymorph.thin(OImage)
-  s(Thin)
-  # s(Thin)
   if num_holes(Image) >= 2:
-    # s(Thin)
     Inner = removeOuter(Thin)
-    s(Inner)
     Inner = (a(d,7))(Inner>0)
-    s(Inner)
     Outer = OImage > Inner
-    s(Outer)
-  # Thick = pymorph.thick(Image)
-  # s(Thick)
-
-
-  # s((a(e, 3))(Image))
 
   ret = dict((k,v) for k, v in locals().iteritems() if k[0].isupper())
   return ret

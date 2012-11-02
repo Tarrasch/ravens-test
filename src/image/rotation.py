@@ -10,8 +10,8 @@ def annotate_rotations(props):
 
 def annotate_rotation(p_subfig):
   r_id = p_subfig['shape_id']
-  represent = p_subfig['props'][r_id]['Image']
-  self = p_subfig['Image']
+  represent = p_subfig['props'][r_id]['FilledImageFit']
+  self = p_subfig['FilledImageFit']
 
   # [for q in range(4):
   def rxor(q):
@@ -37,9 +37,3 @@ def annotate_rotation(p_subfig):
   _val, ratio, _q = max(data, key=itemgetter(1))
   ok = ratio > 0.2
   return {'rot': (q*ok)*90 }
-    # s(ri)
-    # s(ci)
-    # pprint(ri)
-    # pprint(ci)
-    # s(ri ^ ci)
-    # s(np.zeros((5,5)))

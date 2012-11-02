@@ -25,7 +25,6 @@ def massage_props(props):
   return props
 
 def fig_to_props(fig):
-  # s(fig)
   subfigures = get_subfigures(fig)
   rp = lambda subfig: region_prop(fig, subfig)
   props = map(rp, subfigures)
