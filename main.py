@@ -9,7 +9,9 @@ method = solve              # Uncomment to just write the answer number
 method = solve_verbose      # Uncomment to motivate it's answer
 method = solve_very_verbose # Uncomment to compare motivations between choices
 
-visual_method = visual.solve
+visual_method = visual.solve              # Uncomment to just write the answer number
+visual_method = visual.solve_verbose      # Uncomment to motivate it's answer
+visual_method = visual.solve_very_verbose # Uncomment to compare motivations between choices
 
 def main():
   # for x in range(7,9):
