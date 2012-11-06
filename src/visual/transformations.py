@@ -23,9 +23,13 @@ def s(img): pl.imshow(img); pl.gray(); pl.show()
 #
 
 def transformations():
+  a = lambda fun, n: reduce(lambda f1, f2: lambda x: f1(f2(x)), [fun]*n, lambda x: x)
   return [
       (t2d(lambda x: x), "identity-transformer"),
-      (t2d(mirror_x), "mirror x")
+      (t2d(mirror_x), "mirror x"),
+      (t2d(a(np.rot90, 1)), "rotate by 90"),
+      (t2d(a(np.rot90, 2)), "rotate by 180"),
+      (t2d(a(np.rot90, 3)), "rotate by 270"),
   ]
 
 def t2d(modifier):
@@ -41,6 +45,6 @@ def mirror_x(img):
   new = np.copy(img)
   sz = img.shape[0]
   sz2 = sz/2
-  new[:,np.arange(sz2+sz2,sz2,-1)] = img[:,0:sz2]
+  new[:,np.arange(sz2+sz2-1,sz2-1,-1)] = img[:,0:sz2]
   return new
 
