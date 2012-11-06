@@ -8,4 +8,4 @@ def map_tree(f, tree):
 def collapse_tree(tree):
   grid = tree['grid']
   alts = [tree[k] for k in range(100) if tree.has_key(k)]
-  return sum(sum(grid, []) + alts, [])
+  return sum(grid, []) + alts

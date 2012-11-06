@@ -5,9 +5,9 @@ from src.tree import *
 
 def create_rep(image_tree):
   prop_tree = map_tree(fig_to_props, image_tree)
-  massage_props(collapse_tree(prop_tree)) # Like add shape annotations etc
+  massage_props(sum(collapse_tree(prop_tree), [])) # Like add shape annotations etc
   rep_tree = map_tree(prop_to_rep, prop_tree)
-  clean_properties(collapse_tree(rep_tree))
+  clean_properties(sum(collapse_tree(rep_tree), []))
   return rep_tree
 
 def clean_properties(dicts):
