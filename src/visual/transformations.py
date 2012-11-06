@@ -22,14 +22,16 @@ def s(img): pl.imshow(img); pl.gray(); pl.show()
 # of how well the transformation applies. 1.0 = perfect, 0 = not at all
 #
 
+def applyN(fun, n):
+  return reduce(lambda f1, f2: lambda x: f1(f2(x)), [fun]*n, lambda x: x)
+
 def transformations():
-  a = lambda fun, n: reduce(lambda f1, f2: lambda x: f1(f2(x)), [fun]*n, lambda x: x)
   return [
       (t2d(lambda x: x), "identity-transformer"),
       (t2d(mirror_x), "mirror x"),
-      (t2d(a(np.rot90, 1)), "rotate by 90"),
-      (t2d(a(np.rot90, 2)), "rotate by 180"),
-      (t2d(a(np.rot90, 3)), "rotate by 270"),
+      (t2d(applyN(np.rot90, 1)), "rotate by 90"),
+      (t2d(applyN(np.rot90, 2)), "rotate by 180"),
+      (t2d(applyN(np.rot90, 3)), "rotate by 270"),
   ]
 
 def t2d(modifier):
