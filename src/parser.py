@@ -1,32 +1,17 @@
-from image.top import fig_to_props, massage_props, prop_to_rep, segment
 import os.path
 import cv2
-from operator import itemgetter
 
 def parse(dir):
   """
-  Given directory where representation images are
+  Given directory where representation images are, return an representation
+  with the images. This can then either be used directly (visual reasoning) or
+  be converted to a tree with the images replaced with a property based
+  reasoning.
   """
-  # path_to_rep(alternative_paths(dir).next())
-  # path_to_rep(grid_paths(dir)[0][0])
-  # return {}
-  grid = map(lambda xs: map(lambda x: path_to_props(x), xs), grid_paths(dir))
-  alts = map(lambda x: path_to_props(x), alternative_paths(dir))
-  props = sum(sum(grid, []) + alts, [])
-  massage_props(props) # Like add shape annotations etc
-  grid = map(lambda xs: map(lambda x: prop_to_rep(x), xs), grid)
-  alts = map(lambda x: prop_to_rep(x), alts)
-  dicts = sum(sum(grid, []) + alts, [])
-  clean_properties(dicts)
-  d = dict([('grid', grid)] + [(str(i), alts[i-1]) for i in range(1,len(alts)+1)])
+  grid = map(lambda xs: map(lambda x: path_to_fig(x), xs), grid_paths(dir))
+  alts = map(lambda x: path_to_fig(x), alternative_paths(dir))
+  d = dict([('grid', grid)] + [(i, alts[i-1]) for i in range(1,len(alts)+1)])
   return d
-
-def clean_properties(dicts):
-  # Just for efficiency and easier debugging
-  for k in dicts[0].keys():
-    if len(set(map(itemgetter(k), dicts))) <= 1:
-      for d in dicts:
-        del d[k]
 
 def alternative_paths(dir):
   for a in range(1,100):
@@ -43,7 +28,6 @@ def grid_paths(dir):
 def path_to_fig(path):
   return segment(cv2.imread(path, cv2.CV_LOAD_IMAGE_GRAYSCALE))
 
-
-def path_to_props(path):
-  return fig_to_props(path_to_fig(path))
-
+def segment(img):
+  # return pymorph.close((255-img) > 128, Bc = pymorph.sebox(r=1))
+  return (255-img) > 128

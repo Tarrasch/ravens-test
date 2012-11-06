@@ -58,10 +58,6 @@ def merge_annotators(props, annotators):
 def annotate_filled(props):
   return [{'filled': 'yes' if p['Fillity'] > 0.9 else 'no' } for p in props]
 
-def segment(img):
-  # return pymorph.close((255-img) > 128, Bc = pymorph.sebox(r=1))
-  return (255-img) > 128
-
 def get_subfigures(fig):
   cs,_= cv2.findContours( fig.astype('uint8'), mode=cv2.RETR_EXTERNAL,
                                method=cv2.CHAIN_APPROX_NONE )
