@@ -5,10 +5,14 @@ from src.filter import select_best_filter
 import operator
 
 def solve(tree):
-  return solve_verbose(tree)[0]
+  v = solve_very_verbose(tree)
+  return [extract(v), extract_verbose(v), v]
 
-def solve_verbose(tree):
-  return min(solve_very_verbose(tree), key=operator.itemgetter(2))
+def extract(solution):
+  return extract_verbose(solution)[0]
+
+def extract_verbose(solution):
+  return min(solution, key=operator.itemgetter(2))
 
 def solve_very_verbose(tree):
   return list(solve_very_verbose_(tree))

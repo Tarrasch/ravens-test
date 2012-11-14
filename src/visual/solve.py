@@ -18,10 +18,17 @@ from transformations import transformations
 def s(img): pl.imshow(img); pl.gray(); pl.show()
 
 def solve(tree):
-  return solve_verbose(tree)[2]
+  v = solve_very_verbose(tree)
+  return [extract(v), extract_verbose(v), v]
 
-def solve_verbose(tree):
-  return max(solve_very_verbose(tree))
+def extract(solution):
+  return extract_verbose(solution)[2]
+
+def extract_verbose(solution):
+  return max(solution)
+
+def solve_very_verbose(tree):
+  return list(solve_very_verbose_(tree))
 
 def solve_very_verbose(tree):
   return list(solve_very_verbose_(tree))
