@@ -18,7 +18,7 @@ from transformations import transformations
 def s(img): pl.imshow(img); pl.gray(); pl.show()
 
 def solve(tree):
-  return solve_verbose(tree)
+  return solve_verbose(tree)[2]
 
 def solve_verbose(tree):
   return max(solve_very_verbose(tree))
