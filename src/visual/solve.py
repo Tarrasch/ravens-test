@@ -21,7 +21,7 @@ def solve(tree):
   return solve_verbose(tree)
 
 def solve_verbose(tree):
-  return min(solve_very_verbose(tree))
+  return max(solve_very_verbose(tree))
 
 def solve_very_verbose(tree):
   return list(solve_very_verbose_(tree))
