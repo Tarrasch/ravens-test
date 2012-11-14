@@ -24,7 +24,7 @@ def main():
     if os.path.exists(file_path):
       image_tree = parse(file_path)
       d = meta(image_tree)
-      print "+++++ ======================================================"
+      print "============================================================"
       print "The most likely answer based on both solvers is: \t%s" % d['ans']
       print ""
       print "Motivation: " + d['motivation']
