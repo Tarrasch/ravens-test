@@ -74,13 +74,11 @@ def xor_rows_then_compare(grid, alt):
   return similarity(top_xor, bot_xor)
 
 def xor_cands_then_pix_count(grid, alt):
-  if(len(grid) == 2):
-      return 0
   n = len(grid)
   tl, tr, bl, br = grid[0][n-2], grid[0][n-1], grid[n-1][n-2], alt
   l = (tl^bl)
   r = (tr^br)
   def go(l, r):
-    v1, v2 = l.sum()*3.0, r.sum()*2.0
+    v1, v2 = 1.0*n*l.sum(), 1.0*(n-1)*r.sum()
     return min(v1, v2)/(max(v1, v2)+1)
   return min(go(l, r), go(l>tl, r>tr))
