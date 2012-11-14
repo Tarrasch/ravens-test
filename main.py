@@ -6,12 +6,12 @@ from src.image.create_rep import create_rep
 import src.visual.solve as visual
 from src.meta_reasoning import meta
 
-verbosity = 0 # Set from 0 to 2 inclusive.
+verbosity = 1 # Set from 0 to 2 inclusive.
               # VERBOSITY LEGEND:
               #
               # 0: just write the answer number
-              # 1: motivate it's answer
-              # 2: compare motivations between choices
+              # 1: motivate the chosen answer
+              # 2: motivate all answers
 
 show_both = True # Write solution for both methods or the most likely one?
 
@@ -38,7 +38,7 @@ def main():
         print "Solution to problem %s is:" % (x)
         pprint(d['rep'][verbosity])
       else:
-        print "The used solver gave this answer/solution:"
+        print "The used (%s) solver gave this answer/solution:" % d['used']
         pprint(d[d['used']][verbosity])
       print "============================================================"
 
