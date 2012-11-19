@@ -6,7 +6,7 @@ from src.image.create_rep import create_rep
 import src.visual.solve as visual
 from src.meta_reasoning import meta
 
-verbosity = 1 # Set from 0 to 2 inclusive.
+verbosity = 0 # Set from 0 to 2 inclusive.
               # VERBOSITY LEGEND:
               #
               # 0: just write the answer number
